@@ -1,0 +1,3 @@
+dependencies {
+    compile project(":ds3-contract-comparator")
+}

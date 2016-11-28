@@ -1,0 +1,7 @@
+rootProject.name = 'ds3_contract_comparator'
+include 'ds3-contract-comparator'
+
+includeBuild '../ds3_autogen'
+include 'ds3-contract-comparator-cli'
+include 'ds3-contract-comparator-print'
+
