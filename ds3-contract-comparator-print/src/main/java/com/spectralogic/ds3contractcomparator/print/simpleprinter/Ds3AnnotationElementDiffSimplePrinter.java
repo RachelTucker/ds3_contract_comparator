@@ -14,8 +14,6 @@ import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUt
  */
 final class Ds3AnnotationElementDiffSimplePrinter {
 
-    private static final int LABEL_WIDTH = 20;
-    private static final int COLUMN_WIDTH = 50;
     private static final int INDENT = 6;
 
     //todo test
@@ -42,9 +40,9 @@ final class Ds3AnnotationElementDiffSimplePrinter {
      * Prints a {@link Ds3AnnotationElement} that exists in the newer contract but not in the older contract
      */
     private static void printAddedAnnotationElement(final Ds3AnnotationElement newElement, final WriterHelper writer) {
-        printModifiedLine("Name:", "N/A", removePath(newElement.getName()), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("Value:", removePath(newElement.getValue()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printAddedLine("ValueType:", removePath(newElement.getValueType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
+        printModifiedLine("AnnotationElementName:", "N/A", removePath(newElement.getName()), INDENT, writer);
+        printAddedLine("Value:", removePath(newElement.getValue()), INDENT + 1, writer);
+        printAddedLine("ValueType:", removePath(newElement.getValueType()), INDENT + 1, writer);
     }
 
     //TODO test
@@ -52,9 +50,9 @@ final class Ds3AnnotationElementDiffSimplePrinter {
      * Prints a {@link Ds3AnnotationElement} that exists in the older contract but not in the newer contract
      */
     private static void printDeletedAnnotationElement(final Ds3AnnotationElement oldElement, final WriterHelper writer) {
-        printModifiedLine("Name:", removePath(oldElement.getName()), "N/A", LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("Value:", removePath(oldElement.getValue()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printDeletedLine("ValueType:", removePath(oldElement.getValueType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
+        printModifiedLine("AnnotationElementName:", removePath(oldElement.getName()), "N/A", INDENT, writer);
+        printDeletedLine("Value:", removePath(oldElement.getValue()), INDENT + 1, writer);
+        printDeletedLine("ValueType:", removePath(oldElement.getValueType()), INDENT + 1, writer);
     }
 
     //TODO test
@@ -65,8 +63,8 @@ final class Ds3AnnotationElementDiffSimplePrinter {
             final Ds3AnnotationElement oldElement,
             final Ds3AnnotationElement newElement,
             final WriterHelper writer) {
-        printModifiedLine("Name:", removePath(oldElement.getName()), removePath(newElement.getName()), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("Value:", removePath(oldElement.getValue()), removePath(newElement.getValue()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printModifiedLine("ValueType:", removePath(oldElement.getValueType()), removePath(newElement.getValueType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
+        printModifiedLine("AnnotationElementName:", removePath(oldElement.getName()), removePath(newElement.getName()), INDENT, writer);
+        printModifiedLine("Value:", removePath(oldElement.getValue()), removePath(newElement.getValue()), INDENT + 1, writer);
+        printModifiedLine("ValueType:", removePath(oldElement.getValueType()), removePath(newElement.getValueType()), INDENT + 1, writer);
     }
 }

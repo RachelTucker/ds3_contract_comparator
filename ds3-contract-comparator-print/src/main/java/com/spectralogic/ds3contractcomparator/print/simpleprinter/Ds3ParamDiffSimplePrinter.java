@@ -27,8 +27,6 @@ import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUt
  */
 final class Ds3ParamDiffSimplePrinter {
 
-    private static final int LABEL_WIDTH = 20;
-    private static final int COLUMN_WIDTH = 50;
     private static final int INDENT = 2;
 
     //todo test
@@ -58,9 +56,9 @@ final class Ds3ParamDiffSimplePrinter {
      * Prints a {@link Ds3Param} that exists in the newer contract but not in the older contract
      */
     private static void printAddedParam(final Ds3Param newParam, final WriterHelper writer) {
-        printModifiedLine("Name:", "N/A", newParam.getName(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("Type:", removePath(newParam.getType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printAddedLine("Nullable:", newParam.getNullable(), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
+        printModifiedLine("ParamName:", "N/A", newParam.getName(), INDENT, writer);
+        printAddedLine("Type:", removePath(newParam.getType()), INDENT + 1, writer);
+        printAddedLine("Nullable:", newParam.getNullable(), INDENT + 1, writer);
     }
 
     //TODO test
@@ -68,9 +66,9 @@ final class Ds3ParamDiffSimplePrinter {
      * Prints a {@link Ds3Param} that exists in the older contract but not in the newer contract
      */
     private static void printDeletedParam(final Ds3Param oldParam, final WriterHelper writer) {
-        printModifiedLine("Name:", oldParam.getName(), "N/A", LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("Type:", removePath(oldParam.getType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printDeletedLine("Nullable:", oldParam.getNullable(), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
+        printModifiedLine("ParamName:", oldParam.getName(), "N/A", INDENT, writer);
+        printDeletedLine("Type:", removePath(oldParam.getType()), INDENT + 1, writer);
+        printDeletedLine("Nullable:", oldParam.getNullable(), INDENT + 1, writer);
     }
 
     //TODO test
@@ -78,8 +76,8 @@ final class Ds3ParamDiffSimplePrinter {
      * Prints a {@link Ds3Param} that was modified between the contract versions
      */
     private static void printModifiedParam(final Ds3Param oldParam, final Ds3Param newParam, final WriterHelper writer) {
-        printModifiedLine("Name:", oldParam.getName(), newParam.getName(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("Type:", removePath(oldParam.getType()), removePath(newParam.getType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printModifiedLine("Nullable:", oldParam.getNullable(), newParam.getNullable(), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
+        printModifiedLine("ParamName:", oldParam.getName(), newParam.getName(), INDENT, writer);
+        printModifiedLine("Type:", removePath(oldParam.getType()), removePath(newParam.getType()), INDENT + 1, writer);
+        printModifiedLine("Nullable:", oldParam.getNullable(), newParam.getNullable(), INDENT + 1, writer);
     }
 }

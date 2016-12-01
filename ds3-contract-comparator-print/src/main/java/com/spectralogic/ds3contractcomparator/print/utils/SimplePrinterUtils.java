@@ -25,19 +25,19 @@ import static com.spectralogic.ds3autogen.utils.ConverterUtil.isEmpty;
  */
 public final class SimplePrinterUtils {
 
+    private static final String INDENT = "  ";
+    private static final int LABEL_WIDTH = 30;
+    private static final int COLUMN_WIDTH = 60;
+
     //TODO test and document
     public static void printDeletedLine(
             final String label,
             final int oldVal,
-            final int labelWidth,
-            final int columnWidth,
             final int indent,
             final WriterHelper writer) {
         printDeletedLine(
                 label,
                 Integer.toString(oldVal),
-                labelWidth,
-                columnWidth,
                 indent,
                 writer);
     }
@@ -46,15 +46,11 @@ public final class SimplePrinterUtils {
     public static void printDeletedLine(
             final String label,
             final boolean oldVal,
-            final int labelWidth,
-            final int columnWidth,
             final int indent,
             final WriterHelper writer) {
         printDeletedLine(
                 label,
                 Boolean.toString(oldVal),
-                labelWidth,
-                columnWidth,
                 indent,
                 writer);
     }
@@ -63,15 +59,11 @@ public final class SimplePrinterUtils {
     public static void printDeletedLine(
             final String label,
             final Enum<?> oldVal,
-            final int labelWidth,
-            final int columnWidth,
             final int indent,
             final WriterHelper writer) {
         printDeletedLine(
                 label,
                 oldVal != null ? oldVal.toString() : "",
-                labelWidth,
-                columnWidth,
                 indent,
                 writer);
     }
@@ -80,15 +72,13 @@ public final class SimplePrinterUtils {
     public static void printDeletedLine(
             final String label,
             final String oldVal,
-            final int labelWidth,
-            final int columnWidth,
             final int indent,
             final WriterHelper writer) {
         if (isEmpty(oldVal)) {
             //Don't print an empty value
             return;
         }
-        final String printFormat = getPrintStringFormat(labelWidth, columnWidth, indent);
+        final String printFormat = getPrintStringFormat(indent);
         writer.append(String.format(printFormat, label, oldVal, "N/A"));
     }
 
@@ -96,15 +86,11 @@ public final class SimplePrinterUtils {
     public static void printAddedLine(
             final String label,
             final int newVal,
-            final int labelWidth,
-            final int columnWidth,
             final int indent,
             final WriterHelper writer) {
         printAddedLine(
                 label,
                 Integer.toString(newVal),
-                labelWidth,
-                columnWidth,
                 indent,
                 writer);
     }
@@ -113,15 +99,11 @@ public final class SimplePrinterUtils {
     public static void printAddedLine(
             final String label,
             final boolean newVal,
-            final int labelWidth,
-            final int columnWidth,
             final int indent,
             final WriterHelper writer) {
         printAddedLine(
                 label,
                 Boolean.toString(newVal),
-                labelWidth,
-                columnWidth,
                 indent,
                 writer);
     }
@@ -130,15 +112,11 @@ public final class SimplePrinterUtils {
     public static void printAddedLine(
             final String label,
             final Enum<?> newVal,
-            final int labelWidth,
-            final int columnWidth,
             final int indent,
             final WriterHelper writer) {
         printAddedLine(
                 label,
                 newVal != null ? newVal.toString() : "",
-                labelWidth,
-                columnWidth,
                 indent,
                 writer);
     }
@@ -147,15 +125,13 @@ public final class SimplePrinterUtils {
     public static void printAddedLine(
             final String label,
             final String newVal,
-            final int labelWidth,
-            final int columnWidth,
             final int indent,
             final WriterHelper writer) {
         if (isEmpty(newVal)) {
             //Don't print an empty value
             return;
         }
-        final String printFormat = getPrintStringFormat(labelWidth, columnWidth, indent);
+        final String printFormat = getPrintStringFormat(indent);
         writer.append(String.format(printFormat, label, "N/A", newVal));
     }
 
@@ -164,16 +140,12 @@ public final class SimplePrinterUtils {
             final String label,
             final int oldVal,
             final int newVal,
-            final int labelWidth,
-            final int columnWidth,
             final int indent,
             final WriterHelper writer) {
         printModifiedLine(
                 label,
                 Integer.toString(oldVal),
                 Integer.toString(newVal),
-                labelWidth,
-                columnWidth,
                 indent,
                 writer);
     }
@@ -183,16 +155,12 @@ public final class SimplePrinterUtils {
             final String label,
             final boolean oldVal,
             final boolean newVal,
-            final int labelWidth,
-            final int columnWidth,
             final int indent,
             final WriterHelper writer) {
         printModifiedLine(
                 label,
                 Boolean.toString(oldVal),
                 Boolean.toString(newVal),
-                labelWidth,
-                columnWidth,
                 indent,
                 writer);
     }
@@ -202,16 +170,12 @@ public final class SimplePrinterUtils {
             final String label,
             final Enum<?> oldVal,
             final Enum<?> newVal,
-            final int labelWidth,
-            final int columnWidth,
             final int indent,
             final WriterHelper writer) {
         printModifiedLine(
                 label,
                 oldVal != null ? oldVal.toString() : "",
                 newVal != null ? newVal.toString() : "",
-                labelWidth,
-                columnWidth,
                 indent,
                 writer);
     }
@@ -221,15 +185,13 @@ public final class SimplePrinterUtils {
             final String label,
             final String oldVal,
             final String newVal,
-            final int labelWidth,
-            final int columnWidth,
             final int indent,
             final WriterHelper writer) {
         if (isEmpty(oldVal) && isEmpty(newVal)) {
             //Don't print an empty value
             return;
         }
-        final String printFormat = getPrintStringFormat(labelWidth, columnWidth, indent);
+        final String printFormat = getPrintStringFormat(indent);
         if (oldVal.equals(newVal)) {
             writer.append(String.format(printFormat, label, oldVal, newVal));
             return;
@@ -238,17 +200,15 @@ public final class SimplePrinterUtils {
         writer.append(String.format(
                 printFormat,
                 label,
-                StringUtils.rightPad(oldVal, columnWidth - 1, '-') + ">",
+                StringUtils.rightPad(oldVal, COLUMN_WIDTH - 1, '-') + ">",
                 newVal));
 
     }
 
     //TODO test and document
-    private static String getPrintStringFormat(final int labelWidth, final int columnWidth, final int indent) {
-        return indent(indent) + "%-" + labelWidth + "s %-" + columnWidth + "s %-" + columnWidth + "s\n";
+    private static String getPrintStringFormat(final int indent) {
+        return indent(indent) + "%-" + LABEL_WIDTH + "s %-" + COLUMN_WIDTH + "s %-" + COLUMN_WIDTH + "s\n";
     }
-
-    private static final String INDENT = "  ";
 
     //TODO test and document
     public static String indent(final int indent) {

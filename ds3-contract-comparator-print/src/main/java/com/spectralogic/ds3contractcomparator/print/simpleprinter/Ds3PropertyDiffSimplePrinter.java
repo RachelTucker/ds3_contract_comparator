@@ -4,6 +4,7 @@ import com.spectralogic.ds3autogen.api.models.apispec.Ds3Property;
 import com.spectralogic.ds3contractcomparator.print.utils.WriterHelper;
 import org.jetbrains.annotations.Nullable;
 
+import static com.spectralogic.ds3autogen.utils.NormalizingContractNamesUtil.removePath;
 import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUtils.printAddedLine;
 import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUtils.printDeletedLine;
 import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUtils.printModifiedLine;
@@ -13,8 +14,6 @@ import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUt
  */
 class Ds3PropertyDiffSimplePrinter {
 
-    private static final int LABEL_WIDTH = 20;
-    private static final int COLUMN_WIDTH = 50;
     private static final int INDENT = 4;
 
     //todo test
@@ -44,9 +43,9 @@ class Ds3PropertyDiffSimplePrinter {
      * Prints a {@link Ds3Property} that exists in the newer contract but not in the older contract
      */
     private static void printAddedEnumConstant(final Ds3Property newProperty, final WriterHelper writer) {
-        printModifiedLine("Name:", "N/A", newProperty.getName(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("Value:", newProperty.getValue(), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printAddedLine("ValueType:", newProperty.getValueType(), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
+        printModifiedLine("PropertyName:", "N/A", newProperty.getName(), INDENT, writer);
+        printAddedLine("Value:", newProperty.getValue(), INDENT + 1, writer);
+        printAddedLine("ValueType:", removePath(newProperty.getValueType()), INDENT + 1, writer);
     }
 
     //TODO test
@@ -54,9 +53,9 @@ class Ds3PropertyDiffSimplePrinter {
      * Prints a {@link Ds3Property} that exists in the older contract but not in the newer contract
      */
     private static void printDeletedEnumConstant(final Ds3Property oldProperty, final WriterHelper writer) {
-        printModifiedLine("Name:", oldProperty.getName(), "N/A", LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("Value:", oldProperty.getValue(), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printDeletedLine("ValueType:", oldProperty.getValueType(), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
+        printModifiedLine("PropertyName:", oldProperty.getName(), "N/A", INDENT, writer);
+        printDeletedLine("Value:", oldProperty.getValue(), INDENT + 1, writer);
+        printDeletedLine("ValueType:", removePath(oldProperty.getValueType()), INDENT + 1, writer);
     }
 
     //TODO test
@@ -67,8 +66,8 @@ class Ds3PropertyDiffSimplePrinter {
             final Ds3Property oldProperty,
             final Ds3Property newProperty,
             final WriterHelper writer) {
-        printModifiedLine("Name:", oldProperty.getName(), newProperty.getName(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("Value:", oldProperty.getValue(), newProperty.getValue(), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printModifiedLine("ValueType:", oldProperty.getValueType(), newProperty.getValueType(), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
+        printModifiedLine("PropertyName:", oldProperty.getName(), newProperty.getName(), INDENT, writer);
+        printModifiedLine("Value:", oldProperty.getValue(), newProperty.getValue(), INDENT + 1, writer);
+        printModifiedLine("ValueType:", removePath(oldProperty.getValueType()), removePath(newProperty.getValueType()), INDENT + 1, writer);
     }
 }

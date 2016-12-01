@@ -35,8 +35,6 @@ import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUt
  */
 final class Ds3AnnotationDiffSimplePrinter {
 
-    private static final int LABEL_WIDTH = 20;
-    private static final int COLUMN_WIDTH = 50;
     private static final int INDENT = 4;
 
     /**
@@ -65,7 +63,7 @@ final class Ds3AnnotationDiffSimplePrinter {
      * Prints a {@link Ds3Annotation} that exists in the newer contract but not in the older contract
      */
     private static void printAddedAnnotation(final Ds3Annotation newAnnotation, final WriterHelper writer) {
-        printModifiedLine("Name:", "N/A", removePath(newAnnotation.getName()), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
+        printModifiedLine("AnnotationName:", "N/A", removePath(newAnnotation.getName()), INDENT, writer);
         printAnnotationElements(ImmutableList.of(), newAnnotation.getDs3AnnotationElements(), writer);
     }
 
@@ -74,7 +72,7 @@ final class Ds3AnnotationDiffSimplePrinter {
      * Prints a {@link Ds3Annotation} that exists in the older contract but not in the newer contract
      */
     private static void printDeletedAnnotation(final Ds3Annotation oldAnnotation, final WriterHelper writer) {
-        printModifiedLine("Name:", removePath(oldAnnotation.getName()), "N/A", LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
+        printModifiedLine("AnnotationName:", removePath(oldAnnotation.getName()), "N/A", INDENT, writer);
         printAnnotationElements(oldAnnotation.getDs3AnnotationElements(), ImmutableList.of(), writer);
     }
 
@@ -86,7 +84,7 @@ final class Ds3AnnotationDiffSimplePrinter {
             final Ds3Annotation oldAnnotation,
             final Ds3Annotation newAnnotation,
             final WriterHelper writer) {
-        printModifiedLine("Name:", removePath(oldAnnotation.getName()), removePath(newAnnotation.getName()), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
+        printModifiedLine("AnnotationName:", removePath(oldAnnotation.getName()), removePath(newAnnotation.getName()), INDENT, writer);
         printAnnotationElements(oldAnnotation.getDs3AnnotationElements(), newAnnotation.getDs3AnnotationElements(), writer);
     }
 

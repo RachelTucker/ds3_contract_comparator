@@ -28,10 +28,18 @@ class CLI {
         final Option outFile = new Option("d", true, "The file name for the output of the comparison");
         final Option help = new Option("h", false, "Print usage");
 
+        final Option properties = new Option(null, false, "Prints EnumConstant Properties which are excluded by default");
+        properties.setLongOpt("properties");
+
+        final Option annotations = new Option(null, false, "Prints all Element Annotations instead of filtering out less used annotations by default");
+        annotations.setLongOpt("annotations");
+
         options.addOption(oldSpec);
         options.addOption(newSpec);
         options.addOption(outFile);
         options.addOption(help);
+        options.addOption(properties);
+        options.addOption(annotations);
     }
 
     static Arguments getArguments(final String[] args) throws Exception {
@@ -56,8 +64,10 @@ class CLI {
         final String newSpec = cmd.getOptionValue("n");
         final String outFile = cmd.getOptionValue("d");
         final boolean help = cmd.hasOption("h");
+        final boolean properties = cmd.hasOption("properties");
+        final boolean annotations = cmd.hasOption("annotations");
 
-        final Arguments arguments = new Arguments(oldSpec, newSpec, outFile, help);
+        final Arguments arguments = new Arguments(oldSpec, newSpec, outFile, help, properties, annotations);
 
         validateArguments(arguments);
 

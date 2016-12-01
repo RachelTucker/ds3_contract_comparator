@@ -32,8 +32,6 @@ import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUt
  */
 final class Ds3ResponseDiffSimplePrinter {
 
-    private static final int LABEL_WIDTH = 20;
-    private static final int COLUMN_WIDTH = 50;
     private static final int INDENT = 2;
 
     //todo test
@@ -67,9 +65,9 @@ final class Ds3ResponseDiffSimplePrinter {
     private static void printModifiedCode(final Ds3ResponseCode oldCode, final Ds3ResponseCode newCode, final WriterHelper writer) {
         final Ds3ResponseType oldResponseType = oldCode.getDs3ResponseTypes().get(0);
         final Ds3ResponseType newResponseType = newCode.getDs3ResponseTypes().get(0);
-        printModifiedLine("Code:", oldCode.getCode(), newCode.getCode(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("Type:", removePath(oldResponseType.getType()), removePath(newResponseType.getType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printModifiedLine("ComponentType:", removePath(oldResponseType.getComponentType()), removePath(newResponseType.getComponentType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
+        printModifiedLine("ResponseCode:", oldCode.getCode(), newCode.getCode(), INDENT, writer);
+        printModifiedLine("Type:", removePath(oldResponseType.getType()), removePath(newResponseType.getType()), INDENT + 1, writer);
+        printModifiedLine("ComponentType:", removePath(oldResponseType.getComponentType()), removePath(newResponseType.getComponentType()), INDENT + 1, writer);
     }
 
     //todo test
@@ -78,9 +76,9 @@ final class Ds3ResponseDiffSimplePrinter {
      */
     private static void printDeletedCode(final Ds3ResponseCode oldCode, final WriterHelper writer) {
         final Ds3ResponseType oldResponseType = oldCode.getDs3ResponseTypes().get(0);
-        printModifiedLine("Code:", Integer.toString(oldCode.getCode()), "N/A", LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("Type:", removePath(oldResponseType.getType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printDeletedLine("ComponentType:", removePath(oldResponseType.getComponentType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
+        printModifiedLine("ResponseCode:", Integer.toString(oldCode.getCode()), "N/A", INDENT, writer);
+        printDeletedLine("Type:", removePath(oldResponseType.getType()), INDENT + 1, writer);
+        printDeletedLine("ComponentType:", removePath(oldResponseType.getComponentType()), INDENT + 1, writer);
     }
 
     //todo test
@@ -92,8 +90,8 @@ final class Ds3ResponseDiffSimplePrinter {
         if (newResponseType == null) {
             throw new IllegalArgumentException("Ds3ResponseCode does not have an associated Ds3ResponseType: " + newCode.getCode());
         }
-        printModifiedLine("Code:", "N/A", Integer.toString(newCode.getCode()), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("Type:", removePath(newResponseType.getType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printAddedLine("ComponentType:", removePath(newResponseType.getComponentType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
+        printModifiedLine("ResponseCode:", "N/A", Integer.toString(newCode.getCode()), INDENT, writer);
+        printAddedLine("Type:", removePath(newResponseType.getType()), INDENT + 1, writer);
+        printAddedLine("ComponentType:", removePath(newResponseType.getComponentType()), INDENT + 1, writer);
     }
 }

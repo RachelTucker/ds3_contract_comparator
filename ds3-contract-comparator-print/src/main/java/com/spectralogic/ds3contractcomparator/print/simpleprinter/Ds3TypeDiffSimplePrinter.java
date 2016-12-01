@@ -38,25 +38,27 @@ import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUt
  */
 public final class Ds3TypeDiffSimplePrinter {
 
-    private static final int LABEL_WIDTH = 20;
-    private static final int COLUMN_WIDTH = 50;
     private static final int INDENT = 1;
 
     /**
      * Prints the changes in a {@link Ds3TypeDiff} if the type was modified, added or changed.
      * If there was no change, then nothing is printed.
      */
-    public static void printTypeDiff(final Ds3TypeDiff typeDiff, final WriterHelper writer) {
+    public static void printTypeDiff(
+            final Ds3TypeDiff typeDiff,
+            final WriterHelper writer,
+            final boolean printProperties,
+            final boolean printAllAnnotations) {
         if (typeDiff instanceof ModifiedDs3TypeDiff) {
-            printModifiedType(typeDiff.getOldDs3Type(), typeDiff.getNewDs3Type(), writer);
+            printModifiedType(typeDiff.getOldDs3Type(), typeDiff.getNewDs3Type(), writer, printProperties, printAllAnnotations);
             return;
         }
         if (typeDiff instanceof AddedDs3TypeDiff) {
-            printAddedType(typeDiff.getNewDs3Type(), writer);
+            printAddedType(typeDiff.getNewDs3Type(), writer, printProperties, printAllAnnotations);
             return;
         }
         if (typeDiff instanceof DeletedDs3TypeDiff) {
-            printDeletedType(typeDiff.getOldDs3Type(), writer);
+            printDeletedType(typeDiff.getOldDs3Type(), writer, printProperties, printAllAnnotations);
             return;
         }
         if (typeDiff instanceof NoChangeDs3TypeDiff) {
@@ -70,45 +72,61 @@ public final class Ds3TypeDiffSimplePrinter {
     /**
      * Prints a {@link Ds3Type} that exists in the older contract but not in the newer contract
      */
-    private static void printDeletedType(final Ds3Type oldType, final WriterHelper writer) {
-        writer.append("DELETED TYPE ").append(removePath(oldType.getName())).append("\n");
+    private static void printDeletedType(
+            final Ds3Type oldType,
+            final WriterHelper writer,
+            final boolean printProperties,
+            final boolean printAllAnnotations) {
+        writer.append("******************** DELETED TYPE ").append(removePath(oldType.getName()))
+                .append(" ********************\n\n");
 
-        printModifiedLine("Name:", removePath(oldType.getName()), "N/A", LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("NameToMarshal:", oldType.getNameToMarshal(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printElements(oldType.getElements(), ImmutableList.of(), writer);
-        printEnumConstants(oldType.getEnumConstants(), ImmutableList.of(), writer);
+        printModifiedLine("TypeName:", removePath(oldType.getName()), "N/A", INDENT, writer);
+        printDeletedLine("NameToMarshal:", oldType.getNameToMarshal(), INDENT, writer);
+        printElements(oldType.getElements(), ImmutableList.of(), writer, printAllAnnotations);
+        printEnumConstants(oldType.getEnumConstants(), ImmutableList.of(), writer, printProperties);
 
-        writer.append("\n");
+        writer.append("\n\n");
     }
 
     //TODO test
     /**
      * Prints a {@link Ds3Type} that exists in the newer contract but not in the older contract
      */
-    private static void printAddedType(final Ds3Type newType, final WriterHelper writer) {
-        writer.append("ADDED TYPE ").append(removePath(newType.getName())).append("\n");
+    private static void printAddedType(
+            final Ds3Type newType,
+            final WriterHelper writer,
+            final boolean printProperties,
+            final boolean printAllAnnotations) {
+        writer.append("******************** ADDED TYPE ").append(removePath(newType.getName()))
+                .append(" ********************\n\n");
 
-        printModifiedLine("Name:", "N/A", removePath(newType.getName()), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("NameToMarshal:", newType.getNameToMarshal(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printElements(ImmutableList.of(), newType.getElements(), writer);
-        printEnumConstants(ImmutableList.of(), newType.getEnumConstants(), writer);
+        printModifiedLine("TypeName:", "N/A", removePath(newType.getName()), INDENT, writer);
+        printAddedLine("NameToMarshal:", newType.getNameToMarshal(), INDENT, writer);
+        printElements(ImmutableList.of(), newType.getElements(), writer, printAllAnnotations);
+        printEnumConstants(ImmutableList.of(), newType.getEnumConstants(), writer, printProperties);
 
-        writer.append("\n");
+        writer.append("\n\n");
     }
 
     //TODO test
     /**
      * Prints a {@link Ds3Type} that exists in both contracts but was modified between versions
      */
-    private static void printModifiedType(final Ds3Type oldType, final Ds3Type newType, final WriterHelper writer) {
-        writer.append("MODIFIED TYPE ").append(removePath(oldType.getName())).append("\n");
+    private static void printModifiedType(
+            final Ds3Type oldType,
+            final Ds3Type newType,
+            final WriterHelper writer,
+            final boolean printProperties,
+            final boolean printAllAnnotations) {
+        writer.append("******************** MODIFIED TYPE ").append(removePath(oldType.getName()))
+                .append(" ********************\n\n");
 
-        printModifiedLine("Name:", removePath(oldType.getName()), removePath(newType.getName()), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("NameToMarshal:", oldType.getNameToMarshal(), newType.getNameToMarshal(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printElements(oldType.getElements(), newType.getElements(), writer);
-        printEnumConstants(oldType.getEnumConstants(), newType.getEnumConstants(), writer);
+        printModifiedLine("TypeName:", removePath(oldType.getName()), removePath(newType.getName()), INDENT, writer);
+        printModifiedLine("NameToMarshal:", oldType.getNameToMarshal(), newType.getNameToMarshal(), INDENT, writer);
+        printElements(oldType.getElements(), newType.getElements(), writer, printAllAnnotations);
+        printEnumConstants(oldType.getEnumConstants(), newType.getEnumConstants(), writer, printProperties);
 
-        writer.append("\n");
+        writer.append("\n\n");
     }
 
     //TODO test
@@ -119,7 +137,8 @@ public final class Ds3TypeDiffSimplePrinter {
     private static void printElements(
             final ImmutableList<Ds3Element> oldElements,
             final ImmutableList<Ds3Element> newElements,
-            final WriterHelper writer) {
+            final WriterHelper writer,
+            final boolean printAllAnnotations) {
         if (isEmpty(oldElements) && isEmpty(newElements)) {
             //do not print empty values
             return;
@@ -130,7 +149,7 @@ public final class Ds3TypeDiffSimplePrinter {
         final ImmutableMap<String, Ds3Element> oldMap = toElementMap(oldElements);
         final ImmutableMap<String, Ds3Element> newMap = toElementMap(newElements);
 
-        elementNames.forEach(name -> printElementDiff(oldMap.get(name), newMap.get(name), writer));
+        elementNames.forEach(name -> printElementDiff(oldMap.get(name), newMap.get(name), writer, printAllAnnotations));
     }
 
     //TODO test
@@ -172,7 +191,8 @@ public final class Ds3TypeDiffSimplePrinter {
     private static void printEnumConstants(
             final ImmutableList<Ds3EnumConstant> oldEnums,
             final ImmutableList<Ds3EnumConstant> newEnums,
-            final WriterHelper writer) {
+            final WriterHelper writer,
+            final boolean printProperties) {
         if (isEmpty(oldEnums) && isEmpty(newEnums)) {
             //do not print empty values
             return;
@@ -183,7 +203,7 @@ public final class Ds3TypeDiffSimplePrinter {
         final ImmutableMap<String, Ds3EnumConstant> oldMap = toEnumConstantMap(oldEnums);
         final ImmutableMap<String, Ds3EnumConstant> newMap = toEnumConstantMap(newEnums);
 
-        enumNames.forEach(name -> printEnumConstantDiff(oldMap.get(name), newMap.get(name), writer));
+        enumNames.forEach(name -> printEnumConstantDiff(oldMap.get(name), newMap.get(name), writer, printProperties));
     }
 
     //TODO test

@@ -46,7 +46,7 @@ public class Ds3TypeDiffSimplePrinter_Test {
                                 "ElementComponentType",
                                 ImmutableList.of(
                                         new Ds3Annotation(
-                                                "com.test.AnnotationName",
+                                                "com.spectralogic.util.bean.lang.SortBy",
                                                 ImmutableList.of(new Ds3AnnotationElement(
                                                         "com.test.AnnotationElementName",
                                                         "com.test.AnnotationElementValue",
@@ -62,27 +62,27 @@ public class Ds3TypeDiffSimplePrinter_Test {
     }
 
     @Test
-    public void printTypeDiff_Added_Test() throws IOException {
-        final String expected = "ADDED TYPE TestType\n" +
-                "  Name:                N/A----------------------------------------------> TestType                                          \n" +
-                "  NameToMarshal:       N/A                                                TestTypeNameToMarshal                             \n" +
+    public void printTypeDiff_AddedNoFiltering_Test() throws IOException {
+        final String expected = "******************** ADDED TYPE TestType ********************\n\n" +
+                "  TypeName:                      N/A--------------------------------------------------------> TestType                                                    \n" +
+                "  NameToMarshal:                 N/A                                                          TestTypeNameToMarshal                                       \n" +
                 "  Elements:\n" +
-                "    Name:                N/A----------------------------------------------> ElementName                                       \n" +
-                "      Type:                N/A                                                ElementType                                       \n" +
-                "      ComponentType:       N/A                                                ElementComponentType                              \n" +
-                "      Nullable:            N/A                                                true                                              \n" +
+                "    ElementName:                   N/A--------------------------------------------------------> ElementName                                                 \n" +
+                "      Type:                          N/A                                                          ElementType                                                 \n" +
+                "      ComponentType:                 N/A                                                          ElementComponentType                                        \n" +
+                "      Nullable:                      N/A                                                          true                                                        \n" +
                 "      Annotations:\n" +
-                "        Name:                N/A----------------------------------------------> AnnotationName                                    \n" +
+                "        AnnotationName:                N/A--------------------------------------------------------> SortBy                                                      \n" +
                 "          AnnotationElements:\n" +
-                "            Name:                N/A----------------------------------------------> AnnotationElementName                             \n" +
-                "              Value:               N/A                                                AnnotationElementValue                            \n" +
-                "              ValueType:           N/A                                                AnnotationElementValueType                        \n" +
+                "            AnnotationElementName:         N/A--------------------------------------------------------> AnnotationElementName                                       \n" +
+                "              Value:                         N/A                                                          AnnotationElementValue                                      \n" +
+                "              ValueType:                     N/A                                                          AnnotationElementValueType                                  \n" +
                 "  EnumConstants:\n" +
-                "    Name:                N/A----------------------------------------------> EnumConstantName                                  \n" +
+                "    EnumConstantName:              N/A--------------------------------------------------------> EnumConstantName                                            \n" +
                 "      Properties:\n" +
-                "        Name:                N/A----------------------------------------------> PropertyName                                      \n" +
-                "          Value:               N/A                                                PropertyValue                                     \n" +
-                "          ValueType:           N/A                                                PropertyValueType                                 \n\n";
+                "        PropertyName:                  N/A--------------------------------------------------------> PropertyName                                                \n" +
+                "          Value:                         N/A                                                          PropertyValue                                               \n" +
+                "          ValueType:                     N/A                                                          PropertyValueType                                           \n\n\n";
 
         final Ds3TypeDiff diff = new AddedDs3TypeDiff(getTestType());
 
@@ -90,7 +90,7 @@ public class Ds3TypeDiffSimplePrinter_Test {
         final Writer writer = new OutputStreamWriter(outputStream);
         final WriterHelper helper = new WriterHelper(writer);
 
-        Ds3TypeDiffSimplePrinter.printTypeDiff(diff, helper);
+        Ds3TypeDiffSimplePrinter.printTypeDiff(diff, helper, true, true);
         helper.close();
 
         final String result = new String(outputStream.toByteArray());
@@ -98,27 +98,57 @@ public class Ds3TypeDiffSimplePrinter_Test {
     }
 
     @Test
-    public void printTypeDiff_Deleted_Test() throws IOException {
-        final String expected = "DELETED TYPE TestType\n" +
-                "  Name:                TestType-----------------------------------------> N/A                                               \n" +
-                "  NameToMarshal:       TestTypeNameToMarshal                              N/A                                               \n" +
+    public void printTypeDiff_AddedWithFiltering_Test() throws IOException {
+        final String expected = "******************** ADDED TYPE TestType ********************\n\n" +
+                "  TypeName:                      N/A--------------------------------------------------------> TestType                                                    \n" +
+                "  NameToMarshal:                 N/A                                                          TestTypeNameToMarshal                                       \n" +
                 "  Elements:\n" +
-                "    Name:                ElementName--------------------------------------> N/A                                               \n" +
-                "      Type:                ElementType                                        N/A                                               \n" +
-                "      ComponentType:       ElementComponentType                               N/A                                               \n" +
-                "      Nullable:            true                                               N/A                                               \n" +
+                "    ElementName:                   N/A--------------------------------------------------------> ElementName                                                 \n" +
+                "      Type:                          N/A                                                          ElementType                                                 \n" +
+                "      ComponentType:                 N/A                                                          ElementComponentType                                        \n" +
+                "      Nullable:                      N/A                                                          true                                                        \n" +
                 "      Annotations:\n" +
-                "        Name:                AnnotationName-----------------------------------> N/A                                               \n" +
-                "          AnnotationElements:\n" +
-                "            Name:                AnnotationElementName----------------------------> N/A                                               \n" +
-                "              Value:               AnnotationElementValue                             N/A                                               \n" +
-                "              ValueType:           AnnotationElementValueType                         N/A                                               \n" +
+
                 "  EnumConstants:\n" +
-                "    Name:                EnumConstantName---------------------------------> N/A                                               \n" +
+                "    EnumConstantName:              N/A--------------------------------------------------------> EnumConstantName                                            \n" +
+                "\n\n";
+
+        final Ds3TypeDiff diff = new AddedDs3TypeDiff(getTestType());
+
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024 * 8);
+        final Writer writer = new OutputStreamWriter(outputStream);
+        final WriterHelper helper = new WriterHelper(writer);
+
+        Ds3TypeDiffSimplePrinter.printTypeDiff(diff, helper, false, false);
+        helper.close();
+
+        final String result = new String(outputStream.toByteArray());
+        assertThat(result, is(expected));
+    }
+
+    @Test
+    public void printTypeDiff_DeletedNoFiltering_Test() throws IOException {
+        final String expected = "******************** DELETED TYPE TestType ********************\n\n" +
+                "  TypeName:                      TestType---------------------------------------------------> N/A                                                         \n" +
+                "  NameToMarshal:                 TestTypeNameToMarshal                                        N/A                                                         \n" +
+                "  Elements:\n" +
+                "    ElementName:                   ElementName------------------------------------------------> N/A                                                         \n" +
+                "      Type:                          ElementType                                                  N/A                                                         \n" +
+                "      ComponentType:                 ElementComponentType                                         N/A                                                         \n" +
+                "      Nullable:                      true                                                         N/A                                                         \n" +
+                "      Annotations:\n" +
+                "        AnnotationName:                SortBy-----------------------------------------------------> N/A                                                         \n" +
+                "          AnnotationElements:\n" +
+                "            AnnotationElementName:         AnnotationElementName--------------------------------------> N/A                                                         \n" +
+                "              Value:                         AnnotationElementValue                                       N/A                                                         \n" +
+                "              ValueType:                     AnnotationElementValueType                                   N/A                                                         \n" +
+                "  EnumConstants:\n" +
+                "    EnumConstantName:              EnumConstantName-------------------------------------------> N/A                                                         \n" +
                 "      Properties:\n" +
-                "        Name:                PropertyName-------------------------------------> N/A                                               \n" +
-                "          Value:               PropertyValue                                      N/A                                               \n" +
-                "          ValueType:           PropertyValueType                                  N/A                                               \n\n";
+                "        PropertyName:                  PropertyName-----------------------------------------------> N/A                                                         \n" +
+                "          Value:                         PropertyValue                                                N/A                                                         \n" +
+                "          ValueType:                     PropertyValueType                                            N/A                                                         \n" +
+                "\n\n";
 
         final Ds3TypeDiff diff = new DeletedDs3TypeDiff(getTestType());
 
@@ -126,7 +156,35 @@ public class Ds3TypeDiffSimplePrinter_Test {
         final Writer writer = new OutputStreamWriter(outputStream);
         final WriterHelper helper = new WriterHelper(writer);
 
-        Ds3TypeDiffSimplePrinter.printTypeDiff(diff, helper);
+        Ds3TypeDiffSimplePrinter.printTypeDiff(diff, helper, true, true);
+        helper.close();
+
+        final String result = new String(outputStream.toByteArray());
+        assertThat(result, is(expected));
+    }
+
+    @Test
+    public void printTypeDiff_DeletedWithFiltering_Test() throws IOException {
+        final String expected = "******************** DELETED TYPE TestType ********************\n\n" +
+                "  TypeName:                      TestType---------------------------------------------------> N/A                                                         \n" +
+                "  NameToMarshal:                 TestTypeNameToMarshal                                        N/A                                                         \n" +
+                "  Elements:\n" +
+                "    ElementName:                   ElementName------------------------------------------------> N/A                                                         \n" +
+                "      Type:                          ElementType                                                  N/A                                                         \n" +
+                "      ComponentType:                 ElementComponentType                                         N/A                                                         \n" +
+                "      Nullable:                      true                                                         N/A                                                         \n" +
+                "      Annotations:\n" +
+                "  EnumConstants:\n" +
+                "    EnumConstantName:              EnumConstantName-------------------------------------------> N/A                                                         \n" +
+                "\n\n";
+
+        final Ds3TypeDiff diff = new DeletedDs3TypeDiff(getTestType());
+
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024 * 8);
+        final Writer writer = new OutputStreamWriter(outputStream);
+        final WriterHelper helper = new WriterHelper(writer);
+
+        Ds3TypeDiffSimplePrinter.printTypeDiff(diff, helper, false, false);
         helper.close();
 
         final String result = new String(outputStream.toByteArray());
@@ -135,21 +193,22 @@ public class Ds3TypeDiffSimplePrinter_Test {
 
     @Test
     public void printTypeDiff_Modified_Test() throws IOException {
-        final String expected = "MODIFIED TYPE TestType\n" +
-                "  Name:                TestType                                           TestType                                          \n" +
-                "  NameToMarshal:       OldNameToMarshal---------------------------------> NewNameToMarshal                                  \n\n";
+        final String expected = "******************** MODIFIED TYPE TestType ********************\n\n" +
+                "  TypeName:                      TestType                                                     TestType                                                    \n" +
+                "  NameToMarshal:                 OldNameToMarshal-------------------------------------------> NewNameToMarshal                                            \n" +
+                "\n\n";
 
         final Ds3Type oldType = new Ds3Type(
                 "com.test.TestType",
                 "OldNameToMarshal",
-                null, //todo
-                null); //todo
+                ImmutableList.of(),
+                ImmutableList.of());
 
         final Ds3Type newType = new Ds3Type(
                 "com.test.TestType",
                 "NewNameToMarshal",
-                null,
-                null);
+                ImmutableList.of(),
+                ImmutableList.of());
 
         final Ds3TypeDiff diff = new ModifiedDs3TypeDiff(oldType, newType);
 
@@ -157,7 +216,7 @@ public class Ds3TypeDiffSimplePrinter_Test {
         final Writer writer = new OutputStreamWriter(outputStream);
         final WriterHelper helper = new WriterHelper(writer);
 
-        Ds3TypeDiffSimplePrinter.printTypeDiff(diff, helper);
+        Ds3TypeDiffSimplePrinter.printTypeDiff(diff, helper, false, false);
         helper.close();
 
         final String result = new String(outputStream.toByteArray());

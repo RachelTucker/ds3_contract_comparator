@@ -34,8 +34,6 @@ import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUt
  */
 final class Ds3ElementDiffSimplePrinter {
 
-    private static final int LABEL_WIDTH = 20;
-    private static final int COLUMN_WIDTH = 50;
     private static final int INDENT = 2;
 
     //todo test
@@ -45,43 +43,50 @@ final class Ds3ElementDiffSimplePrinter {
     static void printElementDiff(
             @Nullable final Ds3Element oldElement,
             @Nullable final Ds3Element newElement,
-            final WriterHelper writer) {
+            final WriterHelper writer,
+            final boolean printAllAnnotations) {
         if (oldElement == null && newElement == null) {
             throw new IllegalArgumentException("Cannot print difference between two null Ds3Elements");
         }
         if (oldElement == null) {
-            printAddedElement(newElement, writer);
+            printAddedElement(newElement, writer, printAllAnnotations);
             return;
         }
         if (newElement == null) {
-            printDeletedElement(oldElement, writer);
+            printDeletedElement(oldElement, writer, printAllAnnotations);
             return;
         }
-        printModifiedElement(oldElement, newElement, writer);
+        printModifiedElement(oldElement, newElement, writer, printAllAnnotations);
     }
 
     //TODO test
     /**
      * Prints a {@link Ds3Element} that exists in the newer contract but not in the older contract
      */
-    private static void printAddedElement(final Ds3Element newElement, final WriterHelper writer) {
-        printModifiedLine("Name:", "N/A", removePath(newElement.getName()), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("Type:", removePath(newElement.getType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printAddedLine("ComponentType:", removePath(newElement.getComponentType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printAddedLine("Nullable:", newElement.getNullable(), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printAnnotations(ImmutableList.of(), newElement.getDs3Annotations(), writer);
+    private static void printAddedElement(
+            final Ds3Element newElement,
+            final WriterHelper writer,
+            final boolean printAllAnnotations) {
+        printModifiedLine("ElementName:", "N/A", removePath(newElement.getName()), INDENT, writer);
+        printAddedLine("Type:", removePath(newElement.getType()), INDENT + 1, writer);
+        printAddedLine("ComponentType:", removePath(newElement.getComponentType()), INDENT + 1, writer);
+        printAddedLine("Nullable:", newElement.getNullable(), INDENT + 1, writer);
+        printAnnotations(ImmutableList.of(), newElement.getDs3Annotations(), writer, printAllAnnotations);
     }
 
     //TODO test
     /**
      * Prints a {@link Ds3Element} that exists in the older contract but not in the newer contract
      */
-    private static void printDeletedElement(final Ds3Element oldElement, final WriterHelper writer) {
-        printModifiedLine("Name:", removePath(oldElement.getName()), "N/A", LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("Type:", removePath(oldElement.getType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printDeletedLine("ComponentType:", removePath(oldElement.getComponentType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printDeletedLine("Nullable:", oldElement.getNullable(), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printAnnotations(oldElement.getDs3Annotations(), ImmutableList.of(), writer);
+    private static void printDeletedElement(
+            final Ds3Element oldElement,
+            final WriterHelper writer,
+            final boolean printAllAnnotations) {
+        printModifiedLine("ElementName:", removePath(oldElement.getName()), "N/A", INDENT, writer);
+        printDeletedLine("Type:", removePath(oldElement.getType()), INDENT + 1, writer);
+        printDeletedLine("ComponentType:", removePath(oldElement.getComponentType()), INDENT + 1, writer);
+        printDeletedLine("Nullable:", oldElement.getNullable(), INDENT + 1, writer);
+        printAnnotations(oldElement.getDs3Annotations(), ImmutableList.of(), writer, printAllAnnotations);
     }
 
     //TODO test
@@ -91,12 +96,13 @@ final class Ds3ElementDiffSimplePrinter {
     private static void printModifiedElement(
             final Ds3Element oldElement,
             final Ds3Element newElement,
-            final WriterHelper writer) {
-        printModifiedLine("Name:", removePath(oldElement.getName()), removePath(newElement.getName()), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("Type:", removePath(oldElement.getType()), removePath(newElement.getType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printModifiedLine("ComponentType:", removePath(oldElement.getComponentType()), removePath(newElement.getComponentType()), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printModifiedLine("Nullable:", oldElement.getNullable(), newElement.getNullable(), LABEL_WIDTH, COLUMN_WIDTH, INDENT + 1, writer);
-        printAnnotations(oldElement.getDs3Annotations(), newElement.getDs3Annotations(), writer);
+            final WriterHelper writer,
+            final boolean printAllAnnotations) {
+        printModifiedLine("ElementName:", removePath(oldElement.getName()), removePath(newElement.getName()), INDENT, writer);
+        printModifiedLine("Type:", removePath(oldElement.getType()), removePath(newElement.getType()), INDENT + 1, writer);
+        printModifiedLine("ComponentType:", removePath(oldElement.getComponentType()), removePath(newElement.getComponentType()), INDENT + 1, writer);
+        printModifiedLine("Nullable:", oldElement.getNullable(), newElement.getNullable(), INDENT + 1, writer);
+        printAnnotations(oldElement.getDs3Annotations(), newElement.getDs3Annotations(), writer, printAllAnnotations);
     }
 
     //TODO test
@@ -107,7 +113,8 @@ final class Ds3ElementDiffSimplePrinter {
     private static void printAnnotations(
             final ImmutableList<Ds3Annotation> oldAnnotations,
             final ImmutableList<Ds3Annotation> newAnnotations,
-            final WriterHelper writer) {
+            final WriterHelper writer,
+            final boolean printAllAnnotations) {
         if (isEmpty(oldAnnotations) && isEmpty(newAnnotations)) {
             //do not print empty values
             return;
@@ -118,10 +125,31 @@ final class Ds3ElementDiffSimplePrinter {
         final ImmutableMap<String, Ds3Annotation> oldParamMap = toAnnotationMap(oldAnnotations);
         final ImmutableMap<String, Ds3Annotation> newParamMap = toAnnotationMap(newAnnotations);
 
-        annotationNames.forEach(name -> printAnnotationDiff(
+        annotationNames.stream()
+                .filter((annotationName) -> shouldPrintAnnotation(annotationName, printAllAnnotations))
+                .forEach(name -> printAnnotationDiff(
                 oldParamMap.get(name),
                 newParamMap.get(name),
                 writer));
+    }
+
+    //todo test
+    /**
+     * Determines if an annotation should be printed based on filtering of commonly non-relevant annotations
+     */
+    private static boolean shouldPrintAnnotation(final String annotationName, final boolean printAllAnnotations) {
+        return printAllAnnotations ||
+                !annotationName.endsWith("SortBy") &&
+                !annotationName.endsWith("MustMatchRegularExpression") &&
+                !annotationName.endsWith("References") &&
+                !annotationName.endsWith("DefaultBooleanValue") &&
+                !annotationName.endsWith("DefaultEnumValue") &&
+                !annotationName.endsWith("DefaultToCurrentDate") &&
+                !annotationName.endsWith("DefaultStringValue") &&
+                !annotationName.endsWith("DefaultLongValue") &&
+                !annotationName.endsWith("DefaultIntegerValue") &&
+                !annotationName.endsWith("DefaultDoubleValue") &&
+                !annotationName.endsWith("CascadeDelete");
     }
 
     //todo test

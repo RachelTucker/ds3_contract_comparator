@@ -21,16 +21,22 @@ public class Arguments {
     private final String newApiSpec;
     private final String outputFile;
     private final boolean help;
+    private final boolean properties;
+    private final boolean annotations;
 
     public Arguments(
             final String oldApiSpec,
             final String newApiSpec,
             final String outputFile,
-            final boolean help) {
+            final boolean help,
+            final boolean properties,
+            final boolean annotations) {
         this.oldApiSpec = oldApiSpec;
         this.newApiSpec = newApiSpec;
         this.outputFile = outputFile;
         this.help = help;
+        this.properties = properties;
+        this.annotations = annotations;
     }
 
 
@@ -48,5 +54,13 @@ public class Arguments {
 
     public String getOutputFile() {
         return outputFile;
+    }
+
+    public boolean isProperties() {
+        return properties;
+    }
+
+    public boolean isAnnotations() {
+        return annotations;
     }
 }

@@ -36,21 +36,28 @@ import static com.spectralogic.ds3contractcomparator.print.simpleprinter.Ds3Type
 public class Ds3SpecDiffSimplePrinter implements Ds3SpecDiffPrinter {
 
     private final WriterHelper writer;
+    private final boolean printProperties;
+    private final boolean printAllAnnotations;
 
-    public Ds3SpecDiffSimplePrinter(final Writer writer) {
+    public Ds3SpecDiffSimplePrinter(
+            final Writer writer,
+            final boolean printProperties,
+            final boolean printAllAnnotations) {
         this.writer = new WriterHelper(writer);
+        this.printProperties = printProperties;
+        this.printAllAnnotations = printAllAnnotations;
     }
 
     /**
      * Prints all {@link Ds3Request} and {@link Ds3Type} that were changed between contract versions
      */
     public void print(final Ds3ApiSpecDiff specDiff) {
-        specDiff.getTypes().stream()
-                .filter(type -> !(type instanceof NoChangeDs3TypeDiff))
-                .forEach(type -> printTypeDiff(type, writer));
-
         specDiff.getRequests().stream()
                 .filter(request -> !(request instanceof NoChangeDs3RequestDiff))
                 .forEach(request -> printRequestDiff(request, writer));
+
+        specDiff.getTypes().stream()
+                .filter(type -> !(type instanceof NoChangeDs3TypeDiff))
+                .forEach(type -> printTypeDiff(type, writer, printProperties, printAllAnnotations));
     }
 }

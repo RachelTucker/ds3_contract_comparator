@@ -77,7 +77,7 @@ public class Main {
 
         final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(args.getOutputFile()), "UTF-8");
         final Writer writer = new BufferedWriter(outputStreamWriter);
-        final Ds3SpecDiffSimplePrinter printer = new Ds3SpecDiffSimplePrinter(writer);
+        final Ds3SpecDiffSimplePrinter printer = new Ds3SpecDiffSimplePrinter(writer, args.isProperties(), args.isAnnotations());
         printer.print(specDiff);
         writer.close();
     }

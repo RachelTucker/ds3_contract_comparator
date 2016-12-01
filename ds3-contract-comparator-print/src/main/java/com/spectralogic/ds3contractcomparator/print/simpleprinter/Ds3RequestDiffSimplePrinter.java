@@ -38,8 +38,6 @@ import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUt
  */
 public final class Ds3RequestDiffSimplePrinter {
 
-    private static final int LABEL_WIDTH = 20;
-    private static final int COLUMN_WIDTH = 50;
     private static final int INDENT = 1;
 
     /**
@@ -71,24 +69,25 @@ public final class Ds3RequestDiffSimplePrinter {
      * Prints a {@link Ds3Request} that exists in the newer contract but not in the older contract
      */
     private static void printAddedRequest(final Ds3Request newRequest, final WriterHelper writer) {
-        writer.append("ADDED REQUEST ").append(removePath(newRequest.getName()))
-                .append(" (").append(newRequest.getClassification().toString()).append(")\n");
+        writer.append("******************** ADDED REQUEST ").append(removePath(newRequest.getName()))
+                .append(" (").append(newRequest.getClassification().toString())
+                .append(") ********************\n\n");
 
-        printModifiedLine("Name:", "N/A", removePath(newRequest.getName()), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("Classification:", newRequest.getClassification().toString(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("HttpVerb:", newRequest.getHttpVerb(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("BucketRequirement:", newRequest.getBucketRequirement(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("ObjectRequirement:", newRequest.getObjectRequirement(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("Action:", newRequest.getAction(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("Resource:", newRequest.getResource(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("ResourceType:", newRequest.getResourceType(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("Operation:", newRequest.getOperation(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printAddedLine("IncludeInPath:", newRequest.getIncludeInPath(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
+        printModifiedLine("RequestName:", "N/A", removePath(newRequest.getName()), INDENT, writer);
+        printAddedLine("Classification:", newRequest.getClassification().toString(), INDENT, writer);
+        printAddedLine("HttpVerb:", newRequest.getHttpVerb(), INDENT, writer);
+        printAddedLine("BucketRequirement:", newRequest.getBucketRequirement(), INDENT, writer);
+        printAddedLine("ObjectRequirement:", newRequest.getObjectRequirement(), INDENT, writer);
+        printAddedLine("Action:", newRequest.getAction(), INDENT, writer);
+        printAddedLine("Resource:", newRequest.getResource(), INDENT, writer);
+        printAddedLine("ResourceType:", newRequest.getResourceType(), INDENT, writer);
+        printAddedLine("Operation:", newRequest.getOperation(), INDENT, writer);
+        printAddedLine("IncludeInPath:", newRequest.getIncludeInPath(), INDENT, writer);
         printRequestParameters("RequiredParameters:", ImmutableList.of(), newRequest.getRequiredQueryParams(), writer);
         printRequestParameters("OptionalParameters:", ImmutableList.of(), newRequest.getOptionalQueryParams(), writer);
         printResponseCodes(ImmutableList.of(), newRequest.getDs3ResponseCodes(), writer);
 
-        writer.append("\n");
+        writer.append("\n\n");
     }
 
     //todo test
@@ -96,24 +95,25 @@ public final class Ds3RequestDiffSimplePrinter {
      * Prints a {@link Ds3Request} that exists in the older contract but not in the newer contract
      */
     private static void printDeletedRequest(final Ds3Request oldRequest, final WriterHelper writer) {
-        writer.append("DELETED REQUEST ").append(removePath(oldRequest.getName()))
-                .append(" (").append(oldRequest.getClassification().toString()).append(")\n");
+        writer.append("******************** DELETED REQUEST ").append(removePath(oldRequest.getName()))
+                .append(" (").append(oldRequest.getClassification().toString())
+                .append(") ********************\n\n");
 
-        printModifiedLine("Name:", removePath(oldRequest.getName()), "N/A", LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("Classification:", oldRequest.getClassification().toString(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("HttpVerb:", oldRequest.getHttpVerb(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("BucketRequirement:", oldRequest.getBucketRequirement(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("ObjectRequirement:", oldRequest.getObjectRequirement(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("Action:", oldRequest.getAction(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("Resource:", oldRequest.getResource(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("ResourceType:", oldRequest.getResourceType(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("Operation:", oldRequest.getOperation(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printDeletedLine("IncludeInPath:", oldRequest.getIncludeInPath(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
+        printModifiedLine("RequestName:", removePath(oldRequest.getName()), "N/A", INDENT, writer);
+        printDeletedLine("Classification:", oldRequest.getClassification().toString(), INDENT, writer);
+        printDeletedLine("HttpVerb:", oldRequest.getHttpVerb(), INDENT, writer);
+        printDeletedLine("BucketRequirement:", oldRequest.getBucketRequirement(), INDENT, writer);
+        printDeletedLine("ObjectRequirement:", oldRequest.getObjectRequirement(), INDENT, writer);
+        printDeletedLine("Action:", oldRequest.getAction(), INDENT, writer);
+        printDeletedLine("Resource:", oldRequest.getResource(), INDENT, writer);
+        printDeletedLine("ResourceType:", oldRequest.getResourceType(), INDENT, writer);
+        printDeletedLine("Operation:", oldRequest.getOperation(), INDENT, writer);
+        printDeletedLine("IncludeInPath:", oldRequest.getIncludeInPath(), INDENT, writer);
         printRequestParameters("RequiredParameters:", oldRequest.getRequiredQueryParams(), ImmutableList.of(), writer);
         printRequestParameters("OptionalParameters:", oldRequest.getOptionalQueryParams(), ImmutableList.of(), writer);
         printResponseCodes(oldRequest.getDs3ResponseCodes(), ImmutableList.of(), writer);
 
-        writer.append("\n");
+        writer.append("\n\n");
     }
 
     //TODO test
@@ -121,24 +121,25 @@ public final class Ds3RequestDiffSimplePrinter {
      * Prints a {@link Ds3Request} that was modified between the contract versions
      */
     private static void printModifiedRequest(final Ds3Request oldRequest, final Ds3Request newRequest, final WriterHelper writer) {
-        writer.append("MODIFIED REQUEST ").append(removePath(oldRequest.getName()))
-                .append(" (").append(oldRequest.getClassification().toString()).append(")\n");
+        writer.append("******************** MODIFIED REQUEST ").append(removePath(oldRequest.getName()))
+                .append(" (").append(oldRequest.getClassification().toString())
+                .append(") ********************\n\n");
 
-        printModifiedLine("Name:", removePath(oldRequest.getName()), removePath(newRequest.getName()), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("Classification:", oldRequest.getClassification().toString(), newRequest.getClassification().toString(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("HttpVerb:", oldRequest.getHttpVerb(), newRequest.getHttpVerb(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("BucketRequirement:", oldRequest.getBucketRequirement(), newRequest.getBucketRequirement(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("ObjectRequirement:", oldRequest.getObjectRequirement(), newRequest.getObjectRequirement(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("Action:", oldRequest.getAction(), newRequest.getAction(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("Resource:", oldRequest.getResource(), newRequest.getResource(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("ResourceType:", oldRequest.getResourceType(), newRequest.getResourceType(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("Operation:", oldRequest.getOperation(), newRequest.getOperation(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printModifiedLine("IncludeInPath:", oldRequest.getIncludeInPath(), newRequest.getIncludeInPath(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
+        printModifiedLine("RequestName:", removePath(oldRequest.getName()), removePath(newRequest.getName()), INDENT, writer);
+        printModifiedLine("Classification:", oldRequest.getClassification().toString(), newRequest.getClassification().toString(), INDENT, writer);
+        printModifiedLine("HttpVerb:", oldRequest.getHttpVerb(), newRequest.getHttpVerb(), INDENT, writer);
+        printModifiedLine("BucketRequirement:", oldRequest.getBucketRequirement(), newRequest.getBucketRequirement(), INDENT, writer);
+        printModifiedLine("ObjectRequirement:", oldRequest.getObjectRequirement(), newRequest.getObjectRequirement(), INDENT, writer);
+        printModifiedLine("Action:", oldRequest.getAction(), newRequest.getAction(), INDENT, writer);
+        printModifiedLine("Resource:", oldRequest.getResource(), newRequest.getResource(), INDENT, writer);
+        printModifiedLine("ResourceType:", oldRequest.getResourceType(), newRequest.getResourceType(), INDENT, writer);
+        printModifiedLine("Operation:", oldRequest.getOperation(), newRequest.getOperation(), INDENT, writer);
+        printModifiedLine("IncludeInPath:", oldRequest.getIncludeInPath(), newRequest.getIncludeInPath(), INDENT, writer);
         printRequestParameters("RequiredParameters:", oldRequest.getRequiredQueryParams(), newRequest.getRequiredQueryParams(), writer);
         printRequestParameters("OptionalParameters:", oldRequest.getOptionalQueryParams(), newRequest.getOptionalQueryParams(), writer);
         printResponseCodes(oldRequest.getDs3ResponseCodes(), newRequest.getDs3ResponseCodes(), writer);
 
-        writer.append("\n");
+        writer.append("\n\n");
     }
 
     //TODO test

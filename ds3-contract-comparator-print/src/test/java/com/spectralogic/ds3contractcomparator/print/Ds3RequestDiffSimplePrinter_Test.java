@@ -43,29 +43,30 @@ public class Ds3RequestDiffSimplePrinter_Test {
 
     @Test
     public void printRequestDiff_Added_Test() throws IOException {
-        final String expected = "ADDED REQUEST GetBucketRequestHandler (amazons3)\n" +
-                "  Name:                N/A----------------------------------------------> GetBucketRequestHandler                           \n" +
-                "  Classification:      N/A                                                amazons3                                          \n" +
-                "  HttpVerb:            N/A                                                GET                                               \n" +
-                "  BucketRequirement:   N/A                                                REQUIRED                                          \n" +
-                "  ObjectRequirement:   N/A                                                NOT_ALLOWED                                       \n" +
-                "  IncludeInPath:       N/A                                                false                                             \n" +
+        final String expected = "******************** ADDED REQUEST GetBucketRequestHandler (amazons3) ********************\n\n" +
+                "  RequestName:                   N/A--------------------------------------------------------> GetBucketRequestHandler                                     \n" +
+                "  Classification:                N/A                                                          amazons3                                                    \n" +
+                "  HttpVerb:                      N/A                                                          GET                                                         \n" +
+                "  BucketRequirement:             N/A                                                          REQUIRED                                                    \n" +
+                "  ObjectRequirement:             N/A                                                          NOT_ALLOWED                                                 \n" +
+                "  IncludeInPath:                 N/A                                                          false                                                       \n" +
                 "  OptionalParameters:\n" +
-                "    Name:                N/A----------------------------------------------> Delimiter                                         \n" +
-                "      Type:                N/A                                                String                                            \n" +
-                "      Nullable:            N/A                                                true                                              \n" +
-                "    Name:                N/A----------------------------------------------> Marker                                            \n" +
-                "      Type:                N/A                                                String                                            \n" +
-                "      Nullable:            N/A                                                true                                              \n" +
-                "    Name:                N/A----------------------------------------------> MaxKeys                                           \n" +
-                "      Type:                N/A                                                int                                               \n" +
-                "      Nullable:            N/A                                                false                                             \n" +
-                "    Name:                N/A----------------------------------------------> Prefix                                            \n" +
-                "      Type:                N/A                                                String                                            \n" +
-                "      Nullable:            N/A                                                true                                              \n" +
+                "    ParamName:                     N/A--------------------------------------------------------> Delimiter                                                   \n" +
+                "      Type:                          N/A                                                          String                                                      \n" +
+                "      Nullable:                      N/A                                                          true                                                        \n" +
+                "    ParamName:                     N/A--------------------------------------------------------> Marker                                                      \n" +
+                "      Type:                          N/A                                                          String                                                      \n" +
+                "      Nullable:                      N/A                                                          true                                                        \n" +
+                "    ParamName:                     N/A--------------------------------------------------------> MaxKeys                                                     \n" +
+                "      Type:                          N/A                                                          int                                                         \n" +
+                "      Nullable:                      N/A                                                          false                                                       \n" +
+                "    ParamName:                     N/A--------------------------------------------------------> Prefix                                                      \n" +
+                "      Type:                          N/A                                                          String                                                      \n" +
+                "      Nullable:                      N/A                                                          true                                                        \n" +
                 "  ResponseCodes:\n" +
-                "    Code:                N/A----------------------------------------------> 200                                               \n" +
-                "      Type:                N/A                                                ListBucketResult                                  \n\n";
+                "    ResponseCode:                  N/A--------------------------------------------------------> 200                                                         \n" +
+                "      Type:                          N/A                                                          ListBucketResult                                            \n" +
+                "\n\n";
 
         final Ds3RequestDiff diff = new AddedDs3RequestDiff(getBucketRequest());
 
@@ -82,29 +83,30 @@ public class Ds3RequestDiffSimplePrinter_Test {
 
     @Test
     public void printRequestDiff_Deleted_Test() throws IOException {
-        final String expected = "DELETED REQUEST GetBucketRequestHandler (amazons3)\n" +
-                "  Name:                GetBucketRequestHandler--------------------------> N/A                                               \n" +
-                "  Classification:      amazons3                                           N/A                                               \n" +
-                "  HttpVerb:            GET                                                N/A                                               \n" +
-                "  BucketRequirement:   REQUIRED                                           N/A                                               \n" +
-                "  ObjectRequirement:   NOT_ALLOWED                                        N/A                                               \n" +
-                "  IncludeInPath:       false                                              N/A                                               \n" +
+        final String expected = "******************** DELETED REQUEST GetBucketRequestHandler (amazons3) ********************\n\n" +
+                "  RequestName:                   GetBucketRequestHandler------------------------------------> N/A                                                         \n" +
+                "  Classification:                amazons3                                                     N/A                                                         \n" +
+                "  HttpVerb:                      GET                                                          N/A                                                         \n" +
+                "  BucketRequirement:             REQUIRED                                                     N/A                                                         \n" +
+                "  ObjectRequirement:             NOT_ALLOWED                                                  N/A                                                         \n" +
+                "  IncludeInPath:                 false                                                        N/A                                                         \n" +
                 "  OptionalParameters:\n" +
-                "    Name:                Delimiter----------------------------------------> N/A                                               \n" +
-                "      Type:                String                                             N/A                                               \n" +
-                "      Nullable:            true                                               N/A                                               \n" +
-                "    Name:                Marker-------------------------------------------> N/A                                               \n" +
-                "      Type:                String                                             N/A                                               \n" +
-                "      Nullable:            true                                               N/A                                               \n" +
-                "    Name:                MaxKeys------------------------------------------> N/A                                               \n" +
-                "      Type:                int                                                N/A                                               \n" +
-                "      Nullable:            false                                              N/A                                               \n" +
-                "    Name:                Prefix-------------------------------------------> N/A                                               \n" +
-                "      Type:                String                                             N/A                                               \n" +
-                "      Nullable:            true                                               N/A                                               \n" +
+                "    ParamName:                     Delimiter--------------------------------------------------> N/A                                                         \n" +
+                "      Type:                          String                                                       N/A                                                         \n" +
+                "      Nullable:                      true                                                         N/A                                                         \n" +
+                "    ParamName:                     Marker-----------------------------------------------------> N/A                                                         \n" +
+                "      Type:                          String                                                       N/A                                                         \n" +
+                "      Nullable:                      true                                                         N/A                                                         \n" +
+                "    ParamName:                     MaxKeys----------------------------------------------------> N/A                                                         \n" +
+                "      Type:                          int                                                          N/A                                                         \n" +
+                "      Nullable:                      false                                                        N/A                                                         \n" +
+                "    ParamName:                     Prefix-----------------------------------------------------> N/A                                                         \n" +
+                "      Type:                          String                                                       N/A                                                         \n" +
+                "      Nullable:                      true                                                         N/A                                                         \n" +
                 "  ResponseCodes:\n" +
-                "    Code:                200----------------------------------------------> N/A                                               \n" +
-                "      Type:                ListBucketResult                                   N/A                                               \n\n";
+                "    ResponseCode:                  200--------------------------------------------------------> N/A                                                         \n" +
+                "      Type:                          ListBucketResult                                             N/A                                                         \n" +
+                "\n\n";
 
         final Ds3RequestDiff diff = new DeletedDs3RequestDiff(getBucketRequest());
 
@@ -121,42 +123,43 @@ public class Ds3RequestDiffSimplePrinter_Test {
 
     @Test
     public void printRequestDiff_Modified_Test() throws IOException {
-        final String expected = "MODIFIED REQUEST TestRequest (amazons3)\n" +
-                "  Name:                TestRequest                                        TestRequest                                       \n" +
-                "  Classification:      amazons3                                           amazons3                                          \n" +
-                "  HttpVerb:            DELETE-------------------------------------------> HEAD                                              \n" +
-                "  ObjectRequirement:   -------------------------------------------------> NOT_ALLOWED                                       \n" +
-                "  Action:              BULK_DELETE-------------------------------------->                                                   \n" +
-                "  Resource:            ACTIVE_JOB                                         ACTIVE_JOB                                        \n" +
-                "  ResourceType:        NON_SINGLETON                                      NON_SINGLETON                                     \n" +
-                "  Operation:           ALLOCATE                                           ALLOCATE                                          \n" +
-                "  IncludeInPath:       false                                              false                                             \n" +
+        final String expected = "******************** MODIFIED REQUEST TestRequest (amazons3) ********************\n\n" +
+                "  RequestName:                   TestRequest                                                  TestRequest                                                 \n" +
+                "  Classification:                amazons3                                                     amazons3                                                    \n" +
+                "  HttpVerb:                      DELETE-----------------------------------------------------> HEAD                                                        \n" +
+                "  ObjectRequirement:             -----------------------------------------------------------> NOT_ALLOWED                                                 \n" +
+                "  Action:                        BULK_DELETE------------------------------------------------>                                                             \n" +
+                "  Resource:                      ACTIVE_JOB                                                   ACTIVE_JOB                                                  \n" +
+                "  ResourceType:                  NON_SINGLETON                                                NON_SINGLETON                                               \n" +
+                "  Operation:                     ALLOCATE                                                     ALLOCATE                                                    \n" +
+                "  IncludeInPath:                 false                                                        false                                                       \n" +
                 "  OptionalParameters:\n" +
-                "    Name:                StaticParam                                        StaticParam                                       \n" +
-                "      Type:                TestType                                           TestType                                          \n" +
-                "      Nullable:            true                                               true                                              \n" +
-                "    Name:                DeletedParam-------------------------------------> N/A                                               \n" +
-                "      Type:                TestType                                           N/A                                               \n" +
-                "      Nullable:            true                                               N/A                                               \n" +
-                "    Name:                ModifiedParam                                      ModifiedParam                                     \n" +
-                "      Type:                TestType-----------------------------------------> ModifiedTestType                                  \n" +
-                "      Nullable:            true---------------------------------------------> false                                             \n" +
-                "    Name:                N/A----------------------------------------------> AddedParam                                        \n" +
-                "      Type:                N/A                                                TestType                                          \n" +
-                "      Nullable:            N/A                                                true                                              \n" +
+                "    ParamName:                     StaticParam                                                  StaticParam                                                 \n" +
+                "      Type:                          TestType                                                     TestType                                                    \n" +
+                "      Nullable:                      true                                                         true                                                        \n" +
+                "    ParamName:                     DeletedParam-----------------------------------------------> N/A                                                         \n" +
+                "      Type:                          TestType                                                     N/A                                                         \n" +
+                "      Nullable:                      true                                                         N/A                                                         \n" +
+                "    ParamName:                     ModifiedParam                                                ModifiedParam                                               \n" +
+                "      Type:                          TestType---------------------------------------------------> ModifiedTestType                                            \n" +
+                "      Nullable:                      true-------------------------------------------------------> false                                                       \n" +
+                "    ParamName:                     N/A--------------------------------------------------------> AddedParam                                                  \n" +
+                "      Type:                          N/A                                                          TestType                                                    \n" +
+                "      Nullable:                      N/A                                                          true                                                        \n" +
                 "  ResponseCodes:\n" +
-                "    Code:                200                                                200                                               \n" +
-                "      Type:                StaticType                                         StaticType                                        \n" +
-                "      ComponentType:       ComponentType                                      ComponentType                                     \n" +
-                "    Code:                202----------------------------------------------> N/A                                               \n" +
-                "      Type:                DeletedType                                        N/A                                               \n" +
-                "      ComponentType:       ComponentType                                      N/A                                               \n" +
-                "    Code:                203                                                203                                               \n" +
-                "      Type:                ModifiedType                                       ModifiedType                                      \n" +
-                "      ComponentType:       ComponentType------------------------------------> ModifiedComponentType                             \n" +
-                "    Code:                N/A----------------------------------------------> 201                                               \n" +
-                "      Type:                N/A                                                AddedType                                         \n" +
-                "      ComponentType:       N/A                                                ComponentType                                     \n\n";
+                "    ResponseCode:                  200                                                          200                                                         \n" +
+                "      Type:                          StaticType                                                   StaticType                                                  \n" +
+                "      ComponentType:                 ComponentType                                                ComponentType                                               \n" +
+                "    ResponseCode:                  202--------------------------------------------------------> N/A                                                         \n" +
+                "      Type:                          DeletedType                                                  N/A                                                         \n" +
+                "      ComponentType:                 ComponentType                                                N/A                                                         \n" +
+                "    ResponseCode:                  203                                                          203                                                         \n" +
+                "      Type:                          ModifiedType                                                 ModifiedType                                                \n" +
+                "      ComponentType:                 ComponentType----------------------------------------------> ModifiedComponentType                                       \n" +
+                "    ResponseCode:                  N/A--------------------------------------------------------> 201                                                         \n" +
+                "      Type:                          N/A                                                          AddedType                                                   \n" +
+                "      ComponentType:                 N/A                                                          ComponentType                                               \n" +
+                "\n\n";
 
         final Ds3Request oldRequest = new Ds3Request(
                 "TestRequest",

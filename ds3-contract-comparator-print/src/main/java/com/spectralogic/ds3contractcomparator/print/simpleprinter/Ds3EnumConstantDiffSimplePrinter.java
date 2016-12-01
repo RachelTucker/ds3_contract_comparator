@@ -32,10 +32,8 @@ import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUt
 /**
  * Prints the difference in a {@link Ds3EnumConstant} between two versions of a contract
  */
-public class Ds3EnumConstantDiffSimplePrinter {
+class Ds3EnumConstantDiffSimplePrinter {
 
-    private static final int LABEL_WIDTH = 20;
-    private static final int COLUMN_WIDTH = 50;
     private static final int INDENT = 2;
 
     //todo test
@@ -45,37 +43,38 @@ public class Ds3EnumConstantDiffSimplePrinter {
     static void printEnumConstantDiff(
             @Nullable final Ds3EnumConstant oldEnum,
             @Nullable final Ds3EnumConstant newEnum,
-            final WriterHelper writer) {
+            final WriterHelper writer,
+            final boolean printProperties) {
         if (oldEnum == null && newEnum == null) {
             throw new IllegalArgumentException("Cannot print difference between two null Ds3Elements");
         }
         if (oldEnum == null) {
-            printAddedEnumConstant(newEnum, writer);
+            printAddedEnumConstant(newEnum, writer, printProperties);
             return;
         }
         if (newEnum == null) {
-            printDeletedEnumConstant(oldEnum, writer);
+            printDeletedEnumConstant(oldEnum, writer, printProperties);
             return;
         }
-        printModifiedEnumConstant(oldEnum, newEnum, writer);
+        printModifiedEnumConstant(oldEnum, newEnum, writer, printProperties);
     }
 
     //TODO test
     /**
      * Prints a {@link Ds3EnumConstant} that exists in the newer contract but not in the older contract
      */
-    private static void printAddedEnumConstant(final Ds3EnumConstant newEnum, final WriterHelper writer) {
-        printModifiedLine("Name:", "N/A", newEnum.getName(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printProperties(ImmutableList.of(), newEnum.getDs3Properties(), writer);
+    private static void printAddedEnumConstant(final Ds3EnumConstant newEnum, final WriterHelper writer, final boolean printProperties) {
+        printModifiedLine("EnumConstantName:", "N/A", newEnum.getName(), INDENT, writer);
+        printProperties(ImmutableList.of(), newEnum.getDs3Properties(), printProperties, writer);
     }
 
     //TODO test
     /**
      * Prints a {@link Ds3EnumConstant} that exists in the older contract but not in the newer contract
      */
-    private static void printDeletedEnumConstant(final Ds3EnumConstant oldEnum, final WriterHelper writer) {
-        printModifiedLine("Name:", oldEnum.getName(), "N/A", LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printProperties(oldEnum.getDs3Properties(), ImmutableList.of(), writer);
+    private static void printDeletedEnumConstant(final Ds3EnumConstant oldEnum, final WriterHelper writer, final boolean printProperties) {
+        printModifiedLine("EnumConstantName:", oldEnum.getName(), "N/A", INDENT, writer);
+        printProperties(oldEnum.getDs3Properties(), ImmutableList.of(), printProperties, writer);
     }
 
     //TODO test
@@ -85,9 +84,10 @@ public class Ds3EnumConstantDiffSimplePrinter {
     private static void printModifiedEnumConstant(
             final Ds3EnumConstant oldEnum,
             final Ds3EnumConstant newEnum,
-            final WriterHelper writer) {
-        printModifiedLine("Name:", oldEnum.getName(), newEnum.getName(), LABEL_WIDTH, COLUMN_WIDTH, INDENT, writer);
-        printProperties(oldEnum.getDs3Properties(), newEnum.getDs3Properties(), writer);
+            final WriterHelper writer,
+            final boolean printProperties) {
+        printModifiedLine("EnumConstantName:", oldEnum.getName(), newEnum.getName(), INDENT, writer);
+        printProperties(oldEnum.getDs3Properties(), newEnum.getDs3Properties(), printProperties, writer);
     }
 
     //TODO test
@@ -98,8 +98,9 @@ public class Ds3EnumConstantDiffSimplePrinter {
     private static void printProperties(
             final ImmutableList<Ds3Property> oldProperties,
             final ImmutableList<Ds3Property> newProperties,
+            final boolean printProperties,
             final WriterHelper writer) {
-        if (isEmpty(oldProperties) && isEmpty(newProperties)) {
+        if (!printProperties || (isEmpty(oldProperties) && isEmpty(newProperties))) {
             //do not print empty values
             return;
         }
