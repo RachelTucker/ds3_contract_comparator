@@ -21,8 +21,9 @@ import com.spectralogic.ds3autogen.api.models.apispec.Ds3ApiSpec;
 import com.spectralogic.ds3contractcomparator.Ds3ApiSpecComparator;
 import com.spectralogic.ds3contractcomparator.Ds3ApiSpecComparatorImpl;
 import com.spectralogic.ds3contractcomparator.models.Ds3ApiSpecDiff;
+import com.spectralogic.ds3contractcomparator.print.simpleprinter.Ds3SpecDiffSimplePrinter;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
@@ -63,7 +64,7 @@ public class Main {
         this.args = args;
     }
 
-    public void run() throws Exception {
+    private void run() throws Exception {
         final Ds3SpecParser parser = new Ds3SpecParserImpl();
 
         System.out.println("Generating comparison for API contract: " + args.getOldApiSpec() + " to " + args.getNewApiSpec());
@@ -74,8 +75,11 @@ public class Main {
         final Ds3ApiSpecComparator comparator = new Ds3ApiSpecComparatorImpl();
         final Ds3ApiSpecDiff specDiff = comparator.compare(oldSpec, newSpec);
 
-        //TODO print diff
-
+        final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(args.getOutputFile()), "UTF-8");
+        final Writer writer = new BufferedWriter(outputStreamWriter);
+        final Ds3SpecDiffSimplePrinter printer = new Ds3SpecDiffSimplePrinter(writer);
+        printer.print(specDiff);
+        writer.close();
     }
 
     private static Ds3ApiSpec getSpecFromFileName(

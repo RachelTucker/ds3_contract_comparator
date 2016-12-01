@@ -25,10 +25,12 @@ class CLI {
         this.options = new Options();
         final Option oldSpec = new Option("o", true, "The spec file for the older version of the DS3 API");
         final Option newSpec = new Option("n", true, "The spec file for the newer version of the DS3 API");
+        final Option outFile = new Option("d", true, "The file name for the output of the comparison");
         final Option help = new Option("h", false, "Print usage");
 
         options.addOption(oldSpec);
         options.addOption(newSpec);
+        options.addOption(outFile);
         options.addOption(help);
     }
 
@@ -52,9 +54,10 @@ class CLI {
 
         final String oldSpec = cmd.getOptionValue("o");
         final String newSpec = cmd.getOptionValue("n");
+        final String outFile = cmd.getOptionValue("d");
         final boolean help = cmd.hasOption("h");
 
-        final Arguments arguments = new Arguments(oldSpec, newSpec, help);
+        final Arguments arguments = new Arguments(oldSpec, newSpec, outFile, help);
 
         validateArguments(arguments);
 
@@ -65,6 +68,7 @@ class CLI {
         if (arguments.isHelp()) return; //Nothing else to verify
         if (arguments.getOldApiSpec() == null) throw new MissingArgumentException("-o is a required argument");
         if (arguments.getNewApiSpec() == null) throw new MissingArgumentException("-n is a required argument");
+        if (arguments.getOutputFile() == null) throw new MissingArgumentException("-d is a required argument");
     }
 
     private void printUsage() {

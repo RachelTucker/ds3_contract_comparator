@@ -19,14 +19,17 @@ public class Arguments {
 
     private final String oldApiSpec;
     private final String newApiSpec;
+    private final String outputFile;
     private final boolean help;
 
     public Arguments(
             final String oldApiSpec,
             final String newApiSpec,
+            final String outputFile,
             final boolean help) {
         this.oldApiSpec = oldApiSpec;
         this.newApiSpec = newApiSpec;
+        this.outputFile = outputFile;
         this.help = help;
     }
 
@@ -41,5 +44,9 @@ public class Arguments {
 
     public boolean isHelp() {
         return help;
+    }
+
+    public String getOutputFile() {
+        return outputFile;
     }
 }

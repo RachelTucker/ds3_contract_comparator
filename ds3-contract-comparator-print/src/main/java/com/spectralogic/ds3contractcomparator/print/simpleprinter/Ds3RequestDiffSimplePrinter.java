@@ -87,6 +87,8 @@ public final class Ds3RequestDiffSimplePrinter {
         printRequestParameters("RequiredParameters:", ImmutableList.of(), newRequest.getRequiredQueryParams(), writer);
         printRequestParameters("OptionalParameters:", ImmutableList.of(), newRequest.getOptionalQueryParams(), writer);
         printResponseCodes(ImmutableList.of(), newRequest.getDs3ResponseCodes(), writer);
+
+        writer.append("\n");
     }
 
     //todo test
@@ -110,6 +112,8 @@ public final class Ds3RequestDiffSimplePrinter {
         printRequestParameters("RequiredParameters:", oldRequest.getRequiredQueryParams(), ImmutableList.of(), writer);
         printRequestParameters("OptionalParameters:", oldRequest.getOptionalQueryParams(), ImmutableList.of(), writer);
         printResponseCodes(oldRequest.getDs3ResponseCodes(), ImmutableList.of(), writer);
+
+        writer.append("\n");
     }
 
     //TODO test
@@ -133,6 +137,8 @@ public final class Ds3RequestDiffSimplePrinter {
         printRequestParameters("RequiredParameters:", oldRequest.getRequiredQueryParams(), newRequest.getRequiredQueryParams(), writer);
         printRequestParameters("OptionalParameters:", oldRequest.getOptionalQueryParams(), newRequest.getOptionalQueryParams(), writer);
         printResponseCodes(oldRequest.getDs3ResponseCodes(), newRequest.getDs3ResponseCodes(), writer);
+
+        writer.append("\n");
     }
 
     //TODO test

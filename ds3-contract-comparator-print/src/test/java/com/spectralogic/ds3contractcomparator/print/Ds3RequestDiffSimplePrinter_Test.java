@@ -41,7 +41,6 @@ import static com.spectralogic.ds3autogen.testutil.Ds3ModelFixtures.getBucketReq
 
 public class Ds3RequestDiffSimplePrinter_Test {
 
-
     @Test
     public void printRequestDiff_Added_Test() throws IOException {
         final String expected = "ADDED REQUEST GetBucketRequestHandler (amazons3)\n" +
@@ -66,7 +65,7 @@ public class Ds3RequestDiffSimplePrinter_Test {
                 "      Nullable:            N/A                                                true                                              \n" +
                 "  ResponseCodes:\n" +
                 "    Code:                N/A----------------------------------------------> 200                                               \n" +
-                "      Type:                N/A                                                ListBucketResult                                  \n";
+                "      Type:                N/A                                                ListBucketResult                                  \n\n";
 
         final Ds3RequestDiff diff = new AddedDs3RequestDiff(getBucketRequest());
 
@@ -105,7 +104,7 @@ public class Ds3RequestDiffSimplePrinter_Test {
                 "      Nullable:            true                                               N/A                                               \n" +
                 "  ResponseCodes:\n" +
                 "    Code:                200----------------------------------------------> N/A                                               \n" +
-                "      Type:                ListBucketResult                                   N/A                                               \n";
+                "      Type:                ListBucketResult                                   N/A                                               \n\n";
 
         final Ds3RequestDiff diff = new DeletedDs3RequestDiff(getBucketRequest());
 
@@ -157,7 +156,7 @@ public class Ds3RequestDiffSimplePrinter_Test {
                 "      ComponentType:       ComponentType------------------------------------> ModifiedComponentType                             \n" +
                 "    Code:                N/A----------------------------------------------> 201                                               \n" +
                 "      Type:                N/A                                                AddedType                                         \n" +
-                "      ComponentType:       N/A                                                ComponentType                                     \n";
+                "      ComponentType:       N/A                                                ComponentType                                     \n\n";
 
         final Ds3Request oldRequest = new Ds3Request(
                 "TestRequest",
