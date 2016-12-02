@@ -29,7 +29,6 @@ final class Ds3ParamDiffSimplePrinter {
 
     private static final int INDENT = 2;
 
-    //todo test
     /**
      * Prints the changes in a {@link Ds3Param} between two versions of a contract
      */
@@ -51,7 +50,6 @@ final class Ds3ParamDiffSimplePrinter {
         printModifiedParam(oldParam, newParam, writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Param} that exists in the newer contract but not in the older contract
      */
@@ -61,7 +59,6 @@ final class Ds3ParamDiffSimplePrinter {
         printAddedLine("Nullable:", newParam.getNullable(), INDENT + 1, writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Param} that exists in the older contract but not in the newer contract
      */
@@ -71,7 +68,6 @@ final class Ds3ParamDiffSimplePrinter {
         printDeletedLine("Nullable:", oldParam.getNullable(), INDENT + 1, writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Param} that was modified between the contract versions
      */

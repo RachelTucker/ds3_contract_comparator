@@ -36,7 +36,7 @@ import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUt
  * Prints a {@link Ds3Type} if it was added, deleted or modified.
  * If the {@link Ds3Type} was not changed between contract versions, it is not printed.
  */
-public final class Ds3TypeDiffSimplePrinter {
+final class Ds3TypeDiffSimplePrinter {
 
     private static final int INDENT = 1;
 
@@ -44,7 +44,7 @@ public final class Ds3TypeDiffSimplePrinter {
      * Prints the changes in a {@link Ds3TypeDiff} if the type was modified, added or changed.
      * If there was no change, then nothing is printed.
      */
-    public static void printTypeDiff(
+    static void printTypeDiff(
             final Ds3TypeDiff typeDiff,
             final WriterHelper writer,
             final boolean printProperties,
@@ -68,7 +68,6 @@ public final class Ds3TypeDiffSimplePrinter {
         throw new IllegalArgumentException("Simple printer cannot print the implementation of Ds3TypeDiff: " + typeDiff.getClass());
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Type} that exists in the older contract but not in the newer contract
      */
@@ -88,7 +87,6 @@ public final class Ds3TypeDiffSimplePrinter {
         writer.append("\n\n");
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Type} that exists in the newer contract but not in the older contract
      */
@@ -108,7 +106,6 @@ public final class Ds3TypeDiffSimplePrinter {
         writer.append("\n\n");
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Type} that exists in both contracts but was modified between versions
      */
@@ -129,7 +126,6 @@ public final class Ds3TypeDiffSimplePrinter {
         writer.append("\n\n");
     }
 
-    //TODO test
     /**
      * Prints the changes between two {@link ImmutableList} of {@link Ds3Element}. If both lists are
      * empty, then nothing is printed.
@@ -152,7 +148,6 @@ public final class Ds3TypeDiffSimplePrinter {
         elementNames.forEach(name -> printElementDiff(oldMap.get(name), newMap.get(name), writer, printAllAnnotations));
     }
 
-    //TODO test
     /**
      * Gets the union of names of all params within two {@link ImmutableList} of {@link Ds3Element}
      */
@@ -169,7 +164,6 @@ public final class Ds3TypeDiffSimplePrinter {
         return builder.build();
     }
 
-    //TODO test
     /**
      * Converts a {@link ImmutableList} of {@link Ds3Element} into an {@link ImmutableMap} of
      * element names and {@link Ds3Element}
@@ -183,7 +177,6 @@ public final class Ds3TypeDiffSimplePrinter {
         return builder.build();
     }
 
-    //TODO test
     /**
      * Prints the changes between two {@link ImmutableList} of {@link Ds3Element}. If both lists are
      * empty, then nothing is printed.
@@ -206,7 +199,6 @@ public final class Ds3TypeDiffSimplePrinter {
         enumNames.forEach(name -> printEnumConstantDiff(oldMap.get(name), newMap.get(name), writer, printProperties));
     }
 
-    //TODO test
     /**
      * Gets the union of names of all params within two {@link ImmutableList} of {@link Ds3EnumConstant}
      */
@@ -223,7 +215,6 @@ public final class Ds3TypeDiffSimplePrinter {
         return builder.build();
     }
 
-    //TODO test
     /**
      * Converts a {@link ImmutableList} of {@link Ds3EnumConstant} into an {@link ImmutableMap} of
      * enum values (i.e. names) and {@link Ds3EnumConstant}

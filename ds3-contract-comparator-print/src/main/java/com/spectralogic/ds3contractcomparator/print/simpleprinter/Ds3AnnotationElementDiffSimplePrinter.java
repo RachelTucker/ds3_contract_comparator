@@ -16,7 +16,6 @@ final class Ds3AnnotationElementDiffSimplePrinter {
 
     private static final int INDENT = 6;
 
-    //todo test
     static void printAnnotationElementDiff(
             @Nullable final Ds3AnnotationElement oldElement,
             @Nullable final Ds3AnnotationElement newElement,
@@ -35,7 +34,6 @@ final class Ds3AnnotationElementDiffSimplePrinter {
         printModifiedAnnotationElement(oldElement, newElement, writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3AnnotationElement} that exists in the newer contract but not in the older contract
      */
@@ -45,7 +43,6 @@ final class Ds3AnnotationElementDiffSimplePrinter {
         printAddedLine("ValueType:", removePath(newElement.getValueType()), INDENT + 1, writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3AnnotationElement} that exists in the older contract but not in the newer contract
      */
@@ -55,7 +52,6 @@ final class Ds3AnnotationElementDiffSimplePrinter {
         printDeletedLine("ValueType:", removePath(oldElement.getValueType()), INDENT + 1, writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3AnnotationElement} that was modified between contract versions
      */

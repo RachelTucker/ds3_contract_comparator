@@ -36,7 +36,6 @@ final class Ds3ElementDiffSimplePrinter {
 
     private static final int INDENT = 2;
 
-    //todo test
     /**
      * Prints the difference in a {@link Ds3Element} between two versions of a contract
      */
@@ -59,7 +58,6 @@ final class Ds3ElementDiffSimplePrinter {
         printModifiedElement(oldElement, newElement, writer, printAllAnnotations);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Element} that exists in the newer contract but not in the older contract
      */
@@ -74,7 +72,6 @@ final class Ds3ElementDiffSimplePrinter {
         printAnnotations(ImmutableList.of(), newElement.getDs3Annotations(), writer, printAllAnnotations);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Element} that exists in the older contract but not in the newer contract
      */
@@ -89,7 +86,6 @@ final class Ds3ElementDiffSimplePrinter {
         printAnnotations(oldElement.getDs3Annotations(), ImmutableList.of(), writer, printAllAnnotations);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Element} that was modified between contract versions
      */
@@ -105,7 +101,6 @@ final class Ds3ElementDiffSimplePrinter {
         printAnnotations(oldElement.getDs3Annotations(), newElement.getDs3Annotations(), writer, printAllAnnotations);
     }
 
-    //TODO test
     /**
      * Prints the changes between two {@link ImmutableList} of {@link Ds3Annotation}. If both lists are
      * empty, then nothing is printed.
@@ -133,7 +128,6 @@ final class Ds3ElementDiffSimplePrinter {
                 writer));
     }
 
-    //todo test
     /**
      * Determines if an annotation should be printed based on filtering of commonly non-relevant annotations
      */
@@ -152,7 +146,6 @@ final class Ds3ElementDiffSimplePrinter {
                 !annotationName.endsWith("CascadeDelete");
     }
 
-    //todo test
     /**
      * Gets the union of names of all params within two {@link ImmutableList} of {@link Ds3Annotation}
      */
@@ -169,7 +162,6 @@ final class Ds3ElementDiffSimplePrinter {
         return builder.build();
     }
 
-    //todo test
     /**
      * Converts an {@link ImmutableList} of {@link Ds3Annotation} into an {@link ImmutableMap} of
      * annotation names and {@link Ds3Annotation}

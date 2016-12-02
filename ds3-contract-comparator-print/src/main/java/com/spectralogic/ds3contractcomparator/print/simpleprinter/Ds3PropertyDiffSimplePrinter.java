@@ -16,7 +16,6 @@ class Ds3PropertyDiffSimplePrinter {
 
     private static final int INDENT = 4;
 
-    //todo test
     /**
      * Prints the difference in a {@link Ds3Property} between two versions of a contract
      */
@@ -38,7 +37,6 @@ class Ds3PropertyDiffSimplePrinter {
         printModifiedEnumConstant(oldProperty, newProperty, writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Property} that exists in the newer contract but not in the older contract
      */
@@ -48,7 +46,6 @@ class Ds3PropertyDiffSimplePrinter {
         printAddedLine("ValueType:", removePath(newProperty.getValueType()), INDENT + 1, writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Property} that exists in the older contract but not in the newer contract
      */
@@ -58,7 +55,6 @@ class Ds3PropertyDiffSimplePrinter {
         printDeletedLine("ValueType:", removePath(oldProperty.getValueType()), INDENT + 1, writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Property} that was modified between contract versions
      */

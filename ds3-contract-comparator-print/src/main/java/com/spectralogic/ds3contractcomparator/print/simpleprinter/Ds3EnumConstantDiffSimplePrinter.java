@@ -36,7 +36,6 @@ class Ds3EnumConstantDiffSimplePrinter {
 
     private static final int INDENT = 2;
 
-    //todo test
     /**
      * Prints the difference in a {@link Ds3EnumConstant} between two versions of a contract
      */
@@ -59,7 +58,6 @@ class Ds3EnumConstantDiffSimplePrinter {
         printModifiedEnumConstant(oldEnum, newEnum, writer, printProperties);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3EnumConstant} that exists in the newer contract but not in the older contract
      */
@@ -68,7 +66,6 @@ class Ds3EnumConstantDiffSimplePrinter {
         printProperties(ImmutableList.of(), newEnum.getDs3Properties(), printProperties, writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3EnumConstant} that exists in the older contract but not in the newer contract
      */
@@ -77,7 +74,6 @@ class Ds3EnumConstantDiffSimplePrinter {
         printProperties(oldEnum.getDs3Properties(), ImmutableList.of(), printProperties, writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3EnumConstant} that was modified between contract versions
      */
@@ -90,7 +86,6 @@ class Ds3EnumConstantDiffSimplePrinter {
         printProperties(oldEnum.getDs3Properties(), newEnum.getDs3Properties(), printProperties, writer);
     }
 
-    //TODO test
     /**
      * Prints the changes between two {@link ImmutableList} of {@link Ds3Property}. If both lists are
      * empty, then nothing is printed.
@@ -116,7 +111,6 @@ class Ds3EnumConstantDiffSimplePrinter {
                 writer));
     }
 
-    //todo test
     /**
      * Gets the union of names of all properties within two {@link ImmutableList} of {@link Ds3Property}
      */
@@ -133,7 +127,6 @@ class Ds3EnumConstantDiffSimplePrinter {
         return builder.build();
     }
 
-    //todo test
     /**
      * Converts an {@link ImmutableList} of {@link Ds3Property} into an {@link ImmutableMap} of
      * property names and {@link Ds3Property}

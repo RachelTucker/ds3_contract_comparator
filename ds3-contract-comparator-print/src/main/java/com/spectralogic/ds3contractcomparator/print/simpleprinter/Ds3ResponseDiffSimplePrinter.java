@@ -34,7 +34,6 @@ final class Ds3ResponseDiffSimplePrinter {
 
     private static final int INDENT = 2;
 
-    //todo test
     /**
      * Prints the changes in a {@link Ds3ResponseCode} between two versions of a contract.
      * @param oldCode The {@link Ds3ResponseCode} in the older version of the contract if exists, else null.
@@ -58,7 +57,6 @@ final class Ds3ResponseDiffSimplePrinter {
         printModifiedCode(oldCode, newCode, writer);
     }
 
-    //todo test
     /**
      * Prints a {@link Ds3ResponseCode} that exists in both versions of the contract, but has been modified
      */
@@ -70,7 +68,6 @@ final class Ds3ResponseDiffSimplePrinter {
         printModifiedLine("ComponentType:", removePath(oldResponseType.getComponentType()), removePath(newResponseType.getComponentType()), INDENT + 1, writer);
     }
 
-    //todo test
     /**
      * Prints a {@link Ds3ResponseCode} that exists in the older contract but not in the newer contract
      */
@@ -81,7 +78,6 @@ final class Ds3ResponseDiffSimplePrinter {
         printDeletedLine("ComponentType:", removePath(oldResponseType.getComponentType()), INDENT + 1, writer);
     }
 
-    //todo test
     /**
      * Prints a {@link Ds3ResponseCode} that exists in the newer contract but not in the older contract
      */

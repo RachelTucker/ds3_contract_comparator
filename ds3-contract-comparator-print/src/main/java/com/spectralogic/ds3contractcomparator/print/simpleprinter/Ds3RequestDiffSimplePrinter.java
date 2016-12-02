@@ -64,7 +64,6 @@ final class Ds3RequestDiffSimplePrinter {
         throw new IllegalArgumentException("Simple printer cannot print the implementation of Ds3RequestDiff: " + requestDiff.getClass());
     }
 
-    //todo test
     /**
      * Prints a {@link Ds3Request} that exists in the newer contract but not in the older contract
      */
@@ -90,7 +89,6 @@ final class Ds3RequestDiffSimplePrinter {
         writer.append("\n\n");
     }
 
-    //todo test
     /**
      * Prints a {@link Ds3Request} that exists in the older contract but not in the newer contract
      */
@@ -116,7 +114,6 @@ final class Ds3RequestDiffSimplePrinter {
         writer.append("\n\n");
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Request} that was modified between the contract versions
      */
@@ -142,7 +139,6 @@ final class Ds3RequestDiffSimplePrinter {
         writer.append("\n\n");
     }
 
-    //TODO test
     /**
      * Prints the changes between two {@link ImmutableList} of {@link Ds3ResponseCode}. If both lists are
      * empty, then nothing is printed.
@@ -167,7 +163,6 @@ final class Ds3RequestDiffSimplePrinter {
                 writer));
     }
 
-    //todo test
     /**
      * Gets the union of response codes within two {@link ImmutableList} of {@link Ds3ResponseCode}
      */
@@ -184,7 +179,6 @@ final class Ds3RequestDiffSimplePrinter {
         return builder.build();
     }
 
-    //todo test
     /**
      * Converts an {@link ImmutableList} of {@link Ds3ResponseCode} into an {@link ImmutableMap} of
      * codes and {@link Ds3ResponseCode}
@@ -198,7 +192,6 @@ final class Ds3RequestDiffSimplePrinter {
         return builder.build();
     }
 
-    //TODO test
     /**
      * Prints the changes between two {@link ImmutableList} of {@link Ds3Param}. If both lists are
      * empty, then nothing is printed.
@@ -225,7 +218,6 @@ final class Ds3RequestDiffSimplePrinter {
                 writer));
     }
 
-    //todo test
     /**
      * Gets the union of names of all params within two {@link ImmutableList} of {@link Ds3Param}
      */
@@ -242,7 +234,6 @@ final class Ds3RequestDiffSimplePrinter {
         return builder.build();
     }
 
-    //todo test
     /**
      * Converts an {@link ImmutableList} of {@link Ds3Param} into an {@link ImmutableMap} of
      * parameter names and {@link Ds3Param}
