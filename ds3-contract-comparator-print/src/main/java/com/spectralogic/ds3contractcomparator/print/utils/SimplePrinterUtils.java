@@ -29,7 +29,13 @@ public final class SimplePrinterUtils {
     private static final int LABEL_WIDTH = 30;
     private static final int COLUMN_WIDTH = 60;
 
-    //TODO test and document
+    /**
+     * Prints a line denoting that the specified value existed in the
+     * older contract but not in the newer contract. The value "N/A" is
+     * used to denote the absence of the value in the newer contract column.
+     * @param label The label denoting what category is being printed
+     * @param oldVal The deleted value
+     */
     public static void printDeletedLine(
             final String label,
             final int oldVal,
@@ -42,7 +48,13 @@ public final class SimplePrinterUtils {
                 writer);
     }
 
-    //TODO test and document
+    /**
+     * Prints a line denoting that the specified value existed in the
+     * older contract but not in the newer contract. The value "N/A" is
+     * used to denote the absence of the value in the newer contract column.
+     * @param label The label denoting what category is being printed
+     * @param oldVal The deleted value
+     */
     public static void printDeletedLine(
             final String label,
             final boolean oldVal,
@@ -55,7 +67,13 @@ public final class SimplePrinterUtils {
                 writer);
     }
 
-    //TODO test and document
+    /**
+     * Prints a line denoting that the specified value existed in the
+     * older contract but not in the newer contract. The value "N/A" is
+     * used to denote the absence of the value in the newer contract column.
+     * @param label The label denoting what category is being printed
+     * @param oldVal The deleted value
+     */
     public static void printDeletedLine(
             final String label,
             final Enum<?> oldVal,
@@ -68,7 +86,13 @@ public final class SimplePrinterUtils {
                 writer);
     }
 
-    //TODO test and document
+    /**
+     * Prints a line denoting that the specified value existed in the
+     * older contract but not in the newer contract. The value "N/A" is
+     * used to denote the absence of the value in the newer contract column.
+     * @param label The label denoting what category is being printed
+     * @param oldVal The deleted value
+     */
     public static void printDeletedLine(
             final String label,
             final String oldVal,
@@ -82,7 +106,13 @@ public final class SimplePrinterUtils {
         writer.append(String.format(printFormat, label, oldVal, "N/A"));
     }
 
-    //TODO test and document
+    /**
+     * Prints a line denoting that the specified value exists in the
+     * newer contract but not in the older contract. The value "N/A" is
+     * used to denote the absence of the value in the older contract column.
+     * @param label The label denoting what category is being printed
+     * @param newVal The added value
+     */
     public static void printAddedLine(
             final String label,
             final int newVal,
@@ -95,7 +125,13 @@ public final class SimplePrinterUtils {
                 writer);
     }
 
-    //TODO test and document
+    /**
+     * Prints a line denoting that the specified value exists in the
+     * newer contract but not in the older contract. The value "N/A" is
+     * used to denote the absence of the value in the older contract column.
+     * @param label The label denoting what category is being printed
+     * @param newVal The added value
+     */
     public static void printAddedLine(
             final String label,
             final boolean newVal,
@@ -108,7 +144,13 @@ public final class SimplePrinterUtils {
                 writer);
     }
 
-    //TODO test and document
+    /**
+     * Prints a line denoting that the specified value exists in the
+     * newer contract but not in the older contract. The value "N/A" is
+     * used to denote the absence of the value in the older contract column.
+     * @param label The label denoting what category is being printed
+     * @param newVal The added value
+     */
     public static void printAddedLine(
             final String label,
             final Enum<?> newVal,
@@ -121,7 +163,13 @@ public final class SimplePrinterUtils {
                 writer);
     }
 
-    //TODO test and document
+    /**
+     * Prints a line denoting that the specified value exists in the
+     * newer contract but not in the older contract. The value "N/A" is
+     * used to denote the absence of the value in the older contract column.
+     * @param label The label denoting what category is being printed
+     * @param newVal The added value
+     */
     public static void printAddedLine(
             final String label,
             final String newVal,
@@ -135,7 +183,15 @@ public final class SimplePrinterUtils {
         writer.append(String.format(printFormat, label, "N/A", newVal));
     }
 
-    //TODO test and document
+    /**
+     * Prints a line denoting the value of an element within two versions
+     * of a contract. If the value changed between versions, then an arrow
+     * is printed between the older version to the newer version. If both
+     * values are either empty or null, then the item is not printed.
+     * @param label The label denoting what category is being printed
+     * @param oldVal The older contract version of the value
+     * @param newVal The newer contract version fo the value
+     */
     public static void printModifiedLine(
             final String label,
             final int oldVal,
@@ -150,7 +206,15 @@ public final class SimplePrinterUtils {
                 writer);
     }
 
-    //TODO test and document
+    /**
+     * Prints a line denoting the value of an element within two versions
+     * of a contract. If the value changed between versions, then an arrow
+     * is printed between the older version to the newer version. If both
+     * values are either empty or null, then the item is not printed.
+     * @param label The label denoting what category is being printed
+     * @param oldVal The older contract version of the value
+     * @param newVal The newer contract version fo the value
+     */
     public static void printModifiedLine(
             final String label,
             final boolean oldVal,
@@ -165,7 +229,15 @@ public final class SimplePrinterUtils {
                 writer);
     }
 
-    //TODO test and document
+    /**
+     * Prints a line denoting the value of an element within two versions
+     * of a contract. If the value changed between versions, then an arrow
+     * is printed between the older version to the newer version. If both
+     * values are either empty or null, then the item is not printed.
+     * @param label The label denoting what category is being printed
+     * @param oldVal The older contract version of the value
+     * @param newVal The newer contract version fo the value
+     */
     public static void printModifiedLine(
             final String label,
             final Enum<?> oldVal,
@@ -180,7 +252,15 @@ public final class SimplePrinterUtils {
                 writer);
     }
 
-    //TODO test and document
+    /**
+     * Prints a line denoting the value of an element within two versions
+     * of a contract. If the value changed between versions, then an arrow
+     * is printed between the older version to the newer version. If both
+     * values are either empty or null, then the item is not printed.
+     * @param label The label denoting what category is being printed
+     * @param oldVal The older contract version of the value
+     * @param newVal The newer contract version fo the value
+     */
     public static void printModifiedLine(
             final String label,
             final String oldVal,
@@ -205,12 +285,18 @@ public final class SimplePrinterUtils {
 
     }
 
-    //TODO test and document
+    /**
+     * Creates the string format used to format printing
+     * @param indent The indentation level of the line to be printed
+     */
     private static String getPrintStringFormat(final int indent) {
         return indent(indent) + "%-" + LABEL_WIDTH + "s %-" + COLUMN_WIDTH + "s %-" + COLUMN_WIDTH + "s\n";
     }
 
-    //TODO test and document
+    /**
+     * Creates a string with the specified level of indentation
+     * @param indent The number of times to indent the line
+     */
     public static String indent(final int indent) {
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < indent; i++) {

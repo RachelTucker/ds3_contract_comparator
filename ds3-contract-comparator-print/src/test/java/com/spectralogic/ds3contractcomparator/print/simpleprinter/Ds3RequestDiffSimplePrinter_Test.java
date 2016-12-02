@@ -13,7 +13,7 @@
  * ****************************************************************************
  */
 
-package com.spectralogic.ds3contractcomparator.print;
+package com.spectralogic.ds3contractcomparator.print.simpleprinter;
 
 import com.google.common.collect.ImmutableList;
 import com.spectralogic.ds3autogen.api.models.apispec.Ds3Param;
@@ -25,7 +25,6 @@ import com.spectralogic.ds3contractcomparator.models.request.AddedDs3RequestDiff
 import com.spectralogic.ds3contractcomparator.models.request.DeletedDs3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.request.Ds3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.request.ModifiedDs3RequestDiff;
-import com.spectralogic.ds3contractcomparator.print.simpleprinter.Ds3RequestDiffSimplePrinter;
 import com.spectralogic.ds3contractcomparator.print.utils.WriterHelper;
 import org.junit.Test;
 
@@ -34,10 +33,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
+import static com.spectralogic.ds3autogen.testutil.Ds3ModelFixtures.getBucketRequest;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-
-import static com.spectralogic.ds3autogen.testutil.Ds3ModelFixtures.getBucketRequest;
 
 public class Ds3RequestDiffSimplePrinter_Test {
 

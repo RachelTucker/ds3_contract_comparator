@@ -13,7 +13,7 @@
  * ****************************************************************************
  */
 
-package com.spectralogic.ds3contractcomparator.print;
+package com.spectralogic.ds3contractcomparator.print.simpleprinter;
 
 import com.google.common.collect.ImmutableList;
 import com.spectralogic.ds3autogen.api.models.apispec.*;
@@ -21,7 +21,6 @@ import com.spectralogic.ds3contractcomparator.models.type.AddedDs3TypeDiff;
 import com.spectralogic.ds3contractcomparator.models.type.DeletedDs3TypeDiff;
 import com.spectralogic.ds3contractcomparator.models.type.Ds3TypeDiff;
 import com.spectralogic.ds3contractcomparator.models.type.ModifiedDs3TypeDiff;
-import com.spectralogic.ds3contractcomparator.print.simpleprinter.Ds3TypeDiffSimplePrinter;
 import com.spectralogic.ds3contractcomparator.print.utils.WriterHelper;
 import org.junit.Test;
 

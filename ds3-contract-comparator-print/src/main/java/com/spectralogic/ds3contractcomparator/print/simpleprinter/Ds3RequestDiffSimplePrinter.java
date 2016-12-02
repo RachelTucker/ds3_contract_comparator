@@ -36,7 +36,7 @@ import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUt
  * Prints a {@link Ds3Request} if it was added, deleted or modified.
  * If the {@link Ds3Request} was not changed between contract versions, it is not printed.
  */
-public final class Ds3RequestDiffSimplePrinter {
+final class Ds3RequestDiffSimplePrinter {
 
     private static final int INDENT = 1;
 
@@ -44,7 +44,7 @@ public final class Ds3RequestDiffSimplePrinter {
      * Prints the changes in a {@link Ds3RequestDiff} if the request was modified, added or changed.
      * If there was no change, then nothing is printed.
      */
-    public static void printRequestDiff(final Ds3RequestDiff requestDiff, final WriterHelper writer) {
+    static void printRequestDiff(final Ds3RequestDiff requestDiff, final WriterHelper writer) {
         if (requestDiff instanceof ModifiedDs3RequestDiff) {
             printModifiedRequest(requestDiff.getOldDs3Request(), requestDiff.getNewDs3Request(), writer);
             return;
