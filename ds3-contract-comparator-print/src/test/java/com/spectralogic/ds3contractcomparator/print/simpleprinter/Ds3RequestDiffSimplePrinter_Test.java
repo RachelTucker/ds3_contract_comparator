@@ -32,39 +32,39 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.regex.Pattern;
 
 import static com.spectralogic.ds3autogen.testutil.Ds3ModelFixtures.getBucketRequest;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class Ds3RequestDiffSimplePrinter_Test {
 
     @Test
     public void printRequestDiff_Added_Test() throws IOException {
-        final String expected = "******************** ADDED REQUEST GetBucketRequestHandler (amazons3) ********************\n\n" +
-                "  RequestName:                   N/A--------------------------------------------------------> GetBucketRequestHandler                                     \n" +
-                "  Classification:                N/A                                                          amazons3                                                    \n" +
-                "  HttpVerb:                      N/A                                                          GET                                                         \n" +
-                "  BucketRequirement:             N/A                                                          REQUIRED                                                    \n" +
-                "  ObjectRequirement:             N/A                                                          NOT_ALLOWED                                                 \n" +
-                "  IncludeInPath:                 N/A                                                          false                                                       \n" +
-                "  OptionalParameters:\n" +
-                "    ParamName:                     N/A--------------------------------------------------------> Delimiter                                                   \n" +
-                "      Type:                          N/A                                                          String                                                      \n" +
-                "      Nullable:                      N/A                                                          true                                                        \n" +
-                "    ParamName:                     N/A--------------------------------------------------------> Marker                                                      \n" +
-                "      Type:                          N/A                                                          String                                                      \n" +
-                "      Nullable:                      N/A                                                          true                                                        \n" +
-                "    ParamName:                     N/A--------------------------------------------------------> MaxKeys                                                     \n" +
-                "      Type:                          N/A                                                          int                                                         \n" +
-                "      Nullable:                      N/A                                                          false                                                       \n" +
-                "    ParamName:                     N/A--------------------------------------------------------> Prefix                                                      \n" +
-                "      Type:                          N/A                                                          String                                                      \n" +
-                "      Nullable:                      N/A                                                          true                                                        \n" +
-                "  ResponseCodes:\n" +
-                "    ResponseCode:                  N/A--------------------------------------------------------> 200                                                         \n" +
-                "      Type:                          N/A                                                          ListBucketResult                                            \n" +
-                "\n\n";
+        final Pattern expectedPattern = Pattern.compile("\\*{20} ADDED REQUEST GetBucketRequestHandler \\(amazons3\\) \\*{20}" +
+                "\\s+RequestName:\\s+N/A-+> GetBucketRequestHandler" +
+                "\\s+Classification:\\s+N/A\\s+amazons3" +
+                "\\s+HttpVerb:\\s+N/A\\s+GET" +
+                "\\s+BucketRequirement:\\s+N/A\\s+REQUIRED" +
+                "\\s+ObjectRequirement:\\s+N/A\\s+NOT_ALLOWED" +
+                "\\s+IncludeInPath:\\s+N/A\\s+false" +
+                "\\s+OptionalParameters:" +
+                "\\s+ParamName:\\s+N/A-+> Delimiter" +
+                "\\s+Type:\\s+N/A\\s+String" +
+                "\\s+Nullable:\\s+N/A\\s+true" +
+                "\\s+ParamName:\\s+N/A-+> Marker" +
+                "\\s+Type:\\s+N/A\\s+String" +
+                "\\s+Nullable:\\s+N/A\\s+true" +
+                "\\s+ParamName:\\s+N/A-+> MaxKeys" +
+                "\\s+Type:\\s+N/A\\s+int" +
+                "\\s+Nullable:\\s+N/A\\s+false" +
+                "\\s+ParamName:\\s+N/A-+> Prefix" +
+                "\\s+Type:\\s+N/A\\s+String" +
+                "\\s+Nullable:\\s+N/A\\s+true" +
+                "\\s+ResponseCodes:" +
+                "\\s+ResponseCode:\\s+N/A-+> 200" +
+                "\\s+Type:\\s+N/A\\s+ListBucketResult",
+                Pattern.MULTILINE | Pattern.UNIX_LINES);
 
         final Ds3RequestDiff diff = new AddedDs3RequestDiff(getBucketRequest());
 
@@ -76,35 +76,35 @@ public class Ds3RequestDiffSimplePrinter_Test {
         helper.close();
 
         final String result = new String(outputStream.toByteArray());
-        assertThat(result, is(expected));
+        assertTrue(expectedPattern.matcher(result).find());
     }
 
     @Test
     public void printRequestDiff_Deleted_Test() throws IOException {
-        final String expected = "******************** DELETED REQUEST GetBucketRequestHandler (amazons3) ********************\n\n" +
-                "  RequestName:                   GetBucketRequestHandler------------------------------------> N/A                                                         \n" +
-                "  Classification:                amazons3                                                     N/A                                                         \n" +
-                "  HttpVerb:                      GET                                                          N/A                                                         \n" +
-                "  BucketRequirement:             REQUIRED                                                     N/A                                                         \n" +
-                "  ObjectRequirement:             NOT_ALLOWED                                                  N/A                                                         \n" +
-                "  IncludeInPath:                 false                                                        N/A                                                         \n" +
-                "  OptionalParameters:\n" +
-                "    ParamName:                     Delimiter--------------------------------------------------> N/A                                                         \n" +
-                "      Type:                          String                                                       N/A                                                         \n" +
-                "      Nullable:                      true                                                         N/A                                                         \n" +
-                "    ParamName:                     Marker-----------------------------------------------------> N/A                                                         \n" +
-                "      Type:                          String                                                       N/A                                                         \n" +
-                "      Nullable:                      true                                                         N/A                                                         \n" +
-                "    ParamName:                     MaxKeys----------------------------------------------------> N/A                                                         \n" +
-                "      Type:                          int                                                          N/A                                                         \n" +
-                "      Nullable:                      false                                                        N/A                                                         \n" +
-                "    ParamName:                     Prefix-----------------------------------------------------> N/A                                                         \n" +
-                "      Type:                          String                                                       N/A                                                         \n" +
-                "      Nullable:                      true                                                         N/A                                                         \n" +
-                "  ResponseCodes:\n" +
-                "    ResponseCode:                  200--------------------------------------------------------> N/A                                                         \n" +
-                "      Type:                          ListBucketResult                                             N/A                                                         \n" +
-                "\n\n";
+        final Pattern expectedPattern = Pattern.compile("\\*{20} DELETED REQUEST GetBucketRequestHandler \\(amazons3\\) \\*{20}" +
+                "\\s+RequestName:\\s+GetBucketRequestHandler-+> N/A" +
+                "\\s+Classification:\\s+amazons3\\s+N/A" +
+                "\\s+HttpVerb:\\s+GET\\s+N/A" +
+                "\\s+BucketRequirement:\\s+REQUIRED\\s+N/A" +
+                "\\s+ObjectRequirement:\\s+NOT_ALLOWED\\s+N/A" +
+                "\\s+IncludeInPath:\\s+false\\s+N/A" +
+                "\\s+OptionalParameters:" +
+                "\\s+ParamName:\\s+Delimiter-+> N/A" +
+                "\\s+Type:\\s+String\\s+N/A" +
+                "\\s+Nullable:\\s+true\\s+N/A" +
+                "\\s+ParamName:\\s+Marker-+> N/A" +
+                "\\s+Type:\\s+String\\s+N/A" +
+                "\\s+Nullable:\\s+true\\s+N/A" +
+                "\\s+ParamName:\\s+MaxKeys-+> N/A" +
+                "\\s+Type:\\s+int\\s+N/A" +
+                "\\s+Nullable:\\s+false\\s+N/A" +
+                "\\s+ParamName:\\s+Prefix-+> N/A" +
+                "\\s+Type:\\s+String\\s+N/A" +
+                "\\s+Nullable:\\s+true\\s+N/A" +
+                "\\s+ResponseCodes:" +
+                "\\s+ResponseCode:\\s+200-+> N/A" +
+                "\\s+Type:\\s+ListBucketResult\\s+N/A",
+                Pattern.MULTILINE | Pattern.UNIX_LINES);
 
         final Ds3RequestDiff diff = new DeletedDs3RequestDiff(getBucketRequest());
 
@@ -116,48 +116,48 @@ public class Ds3RequestDiffSimplePrinter_Test {
         helper.close();
 
         final String result = new String(outputStream.toByteArray());
-        assertThat(result, is(expected));
+        assertTrue(expectedPattern.matcher(result).find());
     }
 
     @Test
     public void printRequestDiff_Modified_Test() throws IOException {
-        final String expected = "******************** MODIFIED REQUEST TestRequest (amazons3) ********************\n\n" +
-                "  RequestName:                   TestRequest                                                  TestRequest                                                 \n" +
-                "  Classification:                amazons3                                                     amazons3                                                    \n" +
-                "  HttpVerb:                      DELETE-----------------------------------------------------> HEAD                                                        \n" +
-                "  ObjectRequirement:             -----------------------------------------------------------> NOT_ALLOWED                                                 \n" +
-                "  Action:                        BULK_DELETE------------------------------------------------>                                                             \n" +
-                "  Resource:                      ACTIVE_JOB                                                   ACTIVE_JOB                                                  \n" +
-                "  ResourceType:                  NON_SINGLETON                                                NON_SINGLETON                                               \n" +
-                "  Operation:                     ALLOCATE                                                     ALLOCATE                                                    \n" +
-                "  IncludeInPath:                 false                                                        false                                                       \n" +
-                "  OptionalParameters:\n" +
-                "    ParamName:                     StaticParam                                                  StaticParam                                                 \n" +
-                "      Type:                          TestType                                                     TestType                                                    \n" +
-                "      Nullable:                      true                                                         true                                                        \n" +
-                "    ParamName:                     DeletedParam-----------------------------------------------> N/A                                                         \n" +
-                "      Type:                          TestType                                                     N/A                                                         \n" +
-                "      Nullable:                      true                                                         N/A                                                         \n" +
-                "    ParamName:                     ModifiedParam                                                ModifiedParam                                               \n" +
-                "      Type:                          TestType---------------------------------------------------> ModifiedTestType                                            \n" +
-                "      Nullable:                      true-------------------------------------------------------> false                                                       \n" +
-                "    ParamName:                     N/A--------------------------------------------------------> AddedParam                                                  \n" +
-                "      Type:                          N/A                                                          TestType                                                    \n" +
-                "      Nullable:                      N/A                                                          true                                                        \n" +
-                "  ResponseCodes:\n" +
-                "    ResponseCode:                  200                                                          200                                                         \n" +
-                "      Type:                          StaticType                                                   StaticType                                                  \n" +
-                "      ComponentType:                 ComponentType                                                ComponentType                                               \n" +
-                "    ResponseCode:                  202--------------------------------------------------------> N/A                                                         \n" +
-                "      Type:                          DeletedType                                                  N/A                                                         \n" +
-                "      ComponentType:                 ComponentType                                                N/A                                                         \n" +
-                "    ResponseCode:                  203                                                          203                                                         \n" +
-                "      Type:                          ModifiedType                                                 ModifiedType                                                \n" +
-                "      ComponentType:                 ComponentType----------------------------------------------> ModifiedComponentType                                       \n" +
-                "    ResponseCode:                  N/A--------------------------------------------------------> 201                                                         \n" +
-                "      Type:                          N/A                                                          AddedType                                                   \n" +
-                "      ComponentType:                 N/A                                                          ComponentType                                               \n" +
-                "\n\n";
+        final Pattern expectedPattern = Pattern.compile("\\*{20} MODIFIED REQUEST TestRequest \\(amazons3\\) \\*{20}" +
+                "\\s+RequestName:\\s+TestRequest\\s+TestRequest" +
+                "\\s+Classification:\\s+amazons3\\s+amazons3" +
+                "\\s+HttpVerb:\\s+DELETE-+> HEAD" +
+                "\\s+ObjectRequirement:\\s+-+> NOT_ALLOWED" +
+                "\\s+Action:\\s+BULK_DELETE-+>" +
+                "\\s+Resource:\\s+ACTIVE_JOB\\s+ACTIVE_JOB" +
+                "\\s+ResourceType:\\s+NON_SINGLETON\\s+NON_SINGLETON" +
+                "\\s+Operation:\\s+ALLOCATE\\s+ALLOCATE" +
+                "\\s+IncludeInPath:\\s+false\\s+false" +
+                "\\s+OptionalParameters:" +
+                "\\s+ParamName:\\s+StaticParam\\s+StaticParam" +
+                "\\s+Type:\\s+TestType\\s+TestType" +
+                "\\s+Nullable:\\s+true\\s+true" +
+                "\\s+ParamName:\\s+DeletedParam-+> N/A" +
+                "\\s+Type:\\s+TestType\\s+N/A" +
+                "\\s+Nullable:\\s+true\\s+N/A" +
+                "\\s+ParamName:\\s+ModifiedParam\\s+ModifiedParam" +
+                "\\s+Type:\\s+TestType-+> ModifiedTestType" +
+                "\\s+Nullable:\\s+true-+> false" +
+                "\\s+ParamName:\\s+N/A-+> AddedParam" +
+                "\\s+Type:\\s+N/A\\s+TestType" +
+                "\\s+Nullable:\\s+N/A\\s+true" +
+                "\\s+ResponseCodes:" +
+                "\\s+ResponseCode:\\s+200\\s+200" +
+                "\\s+Type:\\s+StaticType\\s+StaticType" +
+                "\\s+ComponentType:\\s+ComponentType\\s+ComponentType" +
+                "\\s+ResponseCode:\\s+202-+> N/A" +
+                "\\s+Type:\\s+DeletedType\\s+N/A" +
+                "\\s+ComponentType:\\s+ComponentType\\s+N/A" +
+                "\\s+ResponseCode:\\s+203\\s+203" +
+                "\\s+Type:\\s+ModifiedType\\s+ModifiedType" +
+                "\\s+ComponentType:\\s+ComponentType-+> ModifiedComponentType" +
+                "\\s+ResponseCode:\\s+N/A-+> 201" +
+                "\\s+Type:\\s+N/A\\s+AddedType" +
+                "\\s+ComponentType:\\s+N/A\\s+ComponentType",
+                Pattern.MULTILINE | Pattern.UNIX_LINES);
 
         final Ds3Request oldRequest = new Ds3Request(
                 "TestRequest",
@@ -213,6 +213,6 @@ public class Ds3RequestDiffSimplePrinter_Test {
         helper.close();
 
         final String result = new String(outputStream.toByteArray());
-        assertThat(result, is(expected));
+        assertTrue(expectedPattern.matcher(result).find());
     }
 }

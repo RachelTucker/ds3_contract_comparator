@@ -28,9 +28,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.regex.Pattern;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 public class Ds3TypeDiffSimplePrinter_Test {
 
@@ -62,26 +62,27 @@ public class Ds3TypeDiffSimplePrinter_Test {
 
     @Test
     public void printTypeDiff_AddedNoFiltering_Test() throws IOException {
-        final String expected = "******************** ADDED TYPE TestType ********************\n\n" +
-                "  TypeName:                      N/A--------------------------------------------------------> TestType                                                    \n" +
-                "  NameToMarshal:                 N/A                                                          TestTypeNameToMarshal                                       \n" +
-                "  Elements:\n" +
-                "    ElementName:                   N/A--------------------------------------------------------> ElementName                                                 \n" +
-                "      Type:                          N/A                                                          ElementType                                                 \n" +
-                "      ComponentType:                 N/A                                                          ElementComponentType                                        \n" +
-                "      Nullable:                      N/A                                                          true                                                        \n" +
-                "      Annotations:\n" +
-                "        AnnotationName:                N/A--------------------------------------------------------> SortBy                                                      \n" +
-                "          AnnotationElements:\n" +
-                "            AnnotationElementName:         N/A--------------------------------------------------------> AnnotationElementName                                       \n" +
-                "              Value:                         N/A                                                          AnnotationElementValue                                      \n" +
-                "              ValueType:                     N/A                                                          AnnotationElementValueType                                  \n" +
-                "  EnumConstants:\n" +
-                "    EnumConstantName:              N/A--------------------------------------------------------> EnumConstantName                                            \n" +
-                "      Properties:\n" +
-                "        PropertyName:                  N/A--------------------------------------------------------> PropertyName                                                \n" +
-                "          Value:                         N/A                                                          PropertyValue                                               \n" +
-                "          ValueType:                     N/A                                                          PropertyValueType                                           \n\n\n";
+        final Pattern expectedPattern = Pattern.compile("\\*{20} ADDED TYPE TestType \\*{20}" +
+                        "\\s+TypeName:\\s+N/A-+> TestType" +
+                        "\\s+NameToMarshal:\\s+N/A\\s+TestTypeNameToMarshal" +
+                        "\\s+Elements:" +
+                        "\\s+ElementName:\\s+N/A-+> ElementName" +
+                        "\\s+Type:\\s+N/A\\s+ElementType" +
+                        "\\s+ComponentType:\\s+N/A\\s+ElementComponentType" +
+                        "\\s+Nullable:\\s+N/A\\s+true" +
+                        "\\s+Annotations:" +
+                        "\\s+AnnotationName:\\s+N/A-+> SortBy" +
+                        "\\s+AnnotationElements:" +
+                        "\\s+AnnotationElementName:\\s+N/A-+> AnnotationElementName" +
+                        "\\s+Value:\\s+N/A\\s+AnnotationElementValue" +
+                        "\\s+ValueType:\\s+N/A\\s+AnnotationElementValueType" +
+                        "\\s+EnumConstants:" +
+                        "\\s+EnumConstantName:\\s+N/A-+> EnumConstantName" +
+                        "\\s+Properties:" +
+                        "\\s+PropertyName:\\s+N/A-+> PropertyName" +
+                        "\\s+Value:\\s+N/A\\s+PropertyValue" +
+                        "\\s+ValueType:\\s+N/A\\s+PropertyValueType",
+                Pattern.MULTILINE | Pattern.UNIX_LINES);
 
         final Ds3TypeDiff diff = new AddedDs3TypeDiff(getTestType());
 
@@ -93,24 +94,23 @@ public class Ds3TypeDiffSimplePrinter_Test {
         helper.close();
 
         final String result = new String(outputStream.toByteArray());
-        assertThat(result, is(expected));
+        assertTrue(expectedPattern.matcher(result).find());
     }
 
     @Test
     public void printTypeDiff_AddedWithFiltering_Test() throws IOException {
-        final String expected = "******************** ADDED TYPE TestType ********************\n\n" +
-                "  TypeName:                      N/A--------------------------------------------------------> TestType                                                    \n" +
-                "  NameToMarshal:                 N/A                                                          TestTypeNameToMarshal                                       \n" +
-                "  Elements:\n" +
-                "    ElementName:                   N/A--------------------------------------------------------> ElementName                                                 \n" +
-                "      Type:                          N/A                                                          ElementType                                                 \n" +
-                "      ComponentType:                 N/A                                                          ElementComponentType                                        \n" +
-                "      Nullable:                      N/A                                                          true                                                        \n" +
-                "      Annotations:\n" +
-
-                "  EnumConstants:\n" +
-                "    EnumConstantName:              N/A--------------------------------------------------------> EnumConstantName                                            \n" +
-                "\n\n";
+        final Pattern expectedPattern = Pattern.compile("\\*{20} ADDED TYPE TestType \\*{20}" +
+                        "\\s+TypeName:\\s+N/A-+> TestType" +
+                        "\\s+NameToMarshal:\\s+N/A\\s+TestTypeNameToMarshal" +
+                        "\\s+Elements:" +
+                        "\\s+ElementName:\\s+N/A-+> ElementName" +
+                        "\\s+Type:\\s+N/A\\s+ElementType" +
+                        "\\s+ComponentType:\\s+N/A\\s+ElementComponentType" +
+                        "\\s+Nullable:\\s+N/A\\s+true" +
+                        "\\s+Annotations:" +
+                        "\\s+EnumConstants:" +
+                        "\\s+EnumConstantName:\\s+N/A-+> EnumConstantName",
+                Pattern.MULTILINE | Pattern.UNIX_LINES);
 
         final Ds3TypeDiff diff = new AddedDs3TypeDiff(getTestType());
 
@@ -122,32 +122,32 @@ public class Ds3TypeDiffSimplePrinter_Test {
         helper.close();
 
         final String result = new String(outputStream.toByteArray());
-        assertThat(result, is(expected));
+        assertTrue(expectedPattern.matcher(result).find());
     }
 
     @Test
     public void printTypeDiff_DeletedNoFiltering_Test() throws IOException {
-        final String expected = "******************** DELETED TYPE TestType ********************\n\n" +
-                "  TypeName:                      TestType---------------------------------------------------> N/A                                                         \n" +
-                "  NameToMarshal:                 TestTypeNameToMarshal                                        N/A                                                         \n" +
-                "  Elements:\n" +
-                "    ElementName:                   ElementName------------------------------------------------> N/A                                                         \n" +
-                "      Type:                          ElementType                                                  N/A                                                         \n" +
-                "      ComponentType:                 ElementComponentType                                         N/A                                                         \n" +
-                "      Nullable:                      true                                                         N/A                                                         \n" +
-                "      Annotations:\n" +
-                "        AnnotationName:                SortBy-----------------------------------------------------> N/A                                                         \n" +
-                "          AnnotationElements:\n" +
-                "            AnnotationElementName:         AnnotationElementName--------------------------------------> N/A                                                         \n" +
-                "              Value:                         AnnotationElementValue                                       N/A                                                         \n" +
-                "              ValueType:                     AnnotationElementValueType                                   N/A                                                         \n" +
-                "  EnumConstants:\n" +
-                "    EnumConstantName:              EnumConstantName-------------------------------------------> N/A                                                         \n" +
-                "      Properties:\n" +
-                "        PropertyName:                  PropertyName-----------------------------------------------> N/A                                                         \n" +
-                "          Value:                         PropertyValue                                                N/A                                                         \n" +
-                "          ValueType:                     PropertyValueType                                            N/A                                                         \n" +
-                "\n\n";
+        final Pattern expectedPattern = Pattern.compile("\\*{20} DELETED TYPE TestType \\*{20}" +
+                        "\\s+TypeName:\\s+TestType-+> N/A" +
+                        "\\s+NameToMarshal:\\s+TestTypeNameToMarshal\\s+N/A" +
+                        "\\s+Elements:" +
+                        "\\s+ElementName:\\s+ElementName-+> N/A" +
+                        "\\s+Type:\\s+ElementType\\s+N/A" +
+                        "\\s+ComponentType:\\s+ElementComponentType\\s+N/A" +
+                        "\\s+Nullable:\\s+true\\s+N/A" +
+                        "\\s+Annotations:" +
+                        "\\s+AnnotationName:\\s+SortBy-+> N/A" +
+                        "\\s+AnnotationElements:" +
+                        "\\s+AnnotationElementName:\\s+AnnotationElementName-+> N/A" +
+                        "\\s+Value:\\s+AnnotationElementValue\\s+N/A" +
+                        "\\s+ValueType:\\s+AnnotationElementValueType\\s+N/A" +
+                        "\\s+EnumConstants:" +
+                        "\\s+EnumConstantName:\\s+EnumConstantName-+> N/A" +
+                        "\\s+Properties:" +
+                        "\\s+PropertyName:\\s+PropertyName-+> N/A" +
+                        "\\s+Value:\\s+PropertyValue\\s+N/A" +
+                        "\\s+ValueType:\\s+PropertyValueType\\s+N/A",
+                Pattern.MULTILINE | Pattern.UNIX_LINES);
 
         final Ds3TypeDiff diff = new DeletedDs3TypeDiff(getTestType());
 
@@ -159,23 +159,23 @@ public class Ds3TypeDiffSimplePrinter_Test {
         helper.close();
 
         final String result = new String(outputStream.toByteArray());
-        assertThat(result, is(expected));
+        assertTrue(expectedPattern.matcher(result).find());
     }
 
     @Test
     public void printTypeDiff_DeletedWithFiltering_Test() throws IOException {
-        final String expected = "******************** DELETED TYPE TestType ********************\n\n" +
-                "  TypeName:                      TestType---------------------------------------------------> N/A                                                         \n" +
-                "  NameToMarshal:                 TestTypeNameToMarshal                                        N/A                                                         \n" +
-                "  Elements:\n" +
-                "    ElementName:                   ElementName------------------------------------------------> N/A                                                         \n" +
-                "      Type:                          ElementType                                                  N/A                                                         \n" +
-                "      ComponentType:                 ElementComponentType                                         N/A                                                         \n" +
-                "      Nullable:                      true                                                         N/A                                                         \n" +
-                "      Annotations:\n" +
-                "  EnumConstants:\n" +
-                "    EnumConstantName:              EnumConstantName-------------------------------------------> N/A                                                         \n" +
-                "\n\n";
+        final Pattern expectedPattern = Pattern.compile("\\*{20} DELETED TYPE TestType \\*{20}" +
+                        "\\s+TypeName:\\s+TestType-+> N/A" +
+                        "\\s+NameToMarshal:\\s+TestTypeNameToMarshal\\s+N/A" +
+                        "\\s+Elements:" +
+                        "\\s+ElementName:\\s+ElementName-+> N/A" +
+                        "\\s+Type:\\s+ElementType\\s+N/A" +
+                        "\\s+ComponentType:\\s+ElementComponentType\\s+N/A" +
+                        "\\s+Nullable:\\s+true\\s+N/A" +
+                        "\\s+Annotations:" +
+                        "\\s+EnumConstants:" +
+                        "\\s+EnumConstantName:\\s+EnumConstantName-+> N/A",
+                Pattern.MULTILINE | Pattern.UNIX_LINES);
 
         final Ds3TypeDiff diff = new DeletedDs3TypeDiff(getTestType());
 
@@ -187,15 +187,15 @@ public class Ds3TypeDiffSimplePrinter_Test {
         helper.close();
 
         final String result = new String(outputStream.toByteArray());
-        assertThat(result, is(expected));
+        assertTrue(expectedPattern.matcher(result).find());
     }
 
     @Test
     public void printTypeDiff_Modified_Test() throws IOException {
-        final String expected = "******************** MODIFIED TYPE TestType ********************\n\n" +
-                "  TypeName:                      TestType                                                     TestType                                                    \n" +
-                "  NameToMarshal:                 OldNameToMarshal-------------------------------------------> NewNameToMarshal                                            \n" +
-                "\n\n";
+        final Pattern expectedPattern = Pattern.compile("\\*{20} MODIFIED TYPE TestType \\*{20}" +
+                        "\\s+TypeName:\\s+TestType\\s+TestType" +
+                        "\\s+NameToMarshal:\\s+OldNameToMarshal-+> NewNameToMarshal",
+                Pattern.MULTILINE | Pattern.UNIX_LINES);
 
         final Ds3Type oldType = new Ds3Type(
                 "com.test.TestType",
@@ -219,6 +219,6 @@ public class Ds3TypeDiffSimplePrinter_Test {
         helper.close();
 
         final String result = new String(outputStream.toByteArray());
-        assertThat(result, is(expected));
+        assertTrue(expectedPattern.matcher(result).find());
     }
 }
