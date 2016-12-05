@@ -58,7 +58,6 @@ final class Ds3AnnotationDiffSimplePrinter {
         printModifiedAnnotation(oldAnnotation, newAnnotation, writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Annotation} that exists in the newer contract but not in the older contract
      */
@@ -67,7 +66,6 @@ final class Ds3AnnotationDiffSimplePrinter {
         printAnnotationElements(ImmutableList.of(), newAnnotation.getDs3AnnotationElements(), writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Annotation} that exists in the older contract but not in the newer contract
      */
@@ -76,7 +74,6 @@ final class Ds3AnnotationDiffSimplePrinter {
         printAnnotationElements(oldAnnotation.getDs3AnnotationElements(), ImmutableList.of(), writer);
     }
 
-    //TODO test
     /**
      * Prints a {@link Ds3Annotation} that was modified between contract versions
      */
@@ -88,7 +85,6 @@ final class Ds3AnnotationDiffSimplePrinter {
         printAnnotationElements(oldAnnotation.getDs3AnnotationElements(), newAnnotation.getDs3AnnotationElements(), writer);
     }
 
-    //TODO test
     /**
      * Prints the changes between two {@link ImmutableList} of {@link Ds3AnnotationElement}. If both lists are
      * empty, then nothing is printed.
@@ -113,7 +109,6 @@ final class Ds3AnnotationDiffSimplePrinter {
                 writer));
     }
 
-    //todo test
     /**
      * Gets the union of names of all params within two {@link ImmutableList} of {@link Ds3AnnotationElement}
      */
@@ -130,7 +125,6 @@ final class Ds3AnnotationDiffSimplePrinter {
         return builder.build();
     }
 
-    //todo test
     /**
      * Converts an {@link ImmutableList} of {@link Ds3AnnotationElement} into an {@link ImmutableMap} of
      * annotation names and {@link Ds3AnnotationElement}
