@@ -51,6 +51,7 @@ public class Ds3SpecDiffSimplePrinter implements Ds3SpecDiffPrinter {
     /**
      * Prints all {@link Ds3Request} and {@link Ds3Type} that were changed between contract versions
      */
+    @Override
     public void print(final Ds3ApiSpecDiff specDiff) {
         specDiff.getRequests().stream()
                 .filter(request -> !(request instanceof NoChangeDs3RequestDiff))

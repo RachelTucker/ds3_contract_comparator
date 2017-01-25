@@ -15,16 +15,7 @@
 
 package com.spectralogic.ds3contractcomparator.print.simpleprinter;
 
-import com.google.common.collect.ImmutableList;
-import com.spectralogic.ds3autogen.api.models.apispec.Ds3Param;
-import com.spectralogic.ds3autogen.api.models.apispec.Ds3Request;
-import com.spectralogic.ds3autogen.api.models.apispec.Ds3ResponseCode;
-import com.spectralogic.ds3autogen.api.models.apispec.Ds3ResponseType;
-import com.spectralogic.ds3autogen.api.models.enums.*;
-import com.spectralogic.ds3contractcomparator.models.request.AddedDs3RequestDiff;
-import com.spectralogic.ds3contractcomparator.models.request.DeletedDs3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.request.Ds3RequestDiff;
-import com.spectralogic.ds3contractcomparator.models.request.ModifiedDs3RequestDiff;
 import com.spectralogic.ds3contractcomparator.print.utils.WriterHelper;
 import org.junit.Test;
 
@@ -34,7 +25,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.regex.Pattern;
 
-import static com.spectralogic.ds3autogen.testutil.Ds3ModelFixtures.getBucketRequest;
+import static com.spectralogic.ds3contractcomparator.print.utils.Ds3SpecDiffFixture.*;
 import static org.junit.Assert.assertTrue;
 
 public class Ds3RequestDiffSimplePrinter_Test {
@@ -66,7 +57,7 @@ public class Ds3RequestDiffSimplePrinter_Test {
                 "\\s+Type:\\s+N/A\\s+ListBucketResult",
                 Pattern.MULTILINE | Pattern.UNIX_LINES);
 
-        final Ds3RequestDiff diff = new AddedDs3RequestDiff(getBucketRequest());
+        final Ds3RequestDiff diff = getAddedRequest();
 
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024 * 8);
         final Writer writer = new OutputStreamWriter(outputStream);
@@ -106,7 +97,7 @@ public class Ds3RequestDiffSimplePrinter_Test {
                 "\\s+Type:\\s+ListBucketResult\\s+N/A",
                 Pattern.MULTILINE | Pattern.UNIX_LINES);
 
-        final Ds3RequestDiff diff = new DeletedDs3RequestDiff(getBucketRequest());
+        final Ds3RequestDiff diff = getDeletedRequest();
 
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024 * 8);
         final Writer writer = new OutputStreamWriter(outputStream);
@@ -159,51 +150,7 @@ public class Ds3RequestDiffSimplePrinter_Test {
                 "\\s+ComponentType:\\s+N/A\\s+ComponentType",
                 Pattern.MULTILINE | Pattern.UNIX_LINES);
 
-        final Ds3Request oldRequest = new Ds3Request(
-                "TestRequest",
-                HttpVerb.DELETE,
-                Classification.amazons3,
-                null,
-                null,
-                Action.BULK_DELETE,
-                Resource.ACTIVE_JOB,
-                ResourceType.NON_SINGLETON,
-                Operation.ALLOCATE,
-                false,
-                ImmutableList.of(
-                        new Ds3ResponseCode(200, ImmutableList.of(new Ds3ResponseType("StaticType", "ComponentType"))), //static
-                        new Ds3ResponseCode(202, ImmutableList.of(new Ds3ResponseType("DeletedType", "ComponentType"))), //deleted
-                        new Ds3ResponseCode(203, ImmutableList.of(new Ds3ResponseType("ModifiedType", "ComponentType")))  //modified
-                ),
-                ImmutableList.of(
-                        new Ds3Param("StaticParam", "TestType", true),
-                        new Ds3Param("DeletedParam", "TestType", true),
-                        new Ds3Param("ModifiedParam", "TestType", true)),
-                null);
-
-        final Ds3Request newRequest = new Ds3Request(
-                "TestRequest",
-                HttpVerb.HEAD,           //changed
-                Classification.amazons3,
-                null,
-                Requirement.NOT_ALLOWED, //added
-                null,              //deleted
-                Resource.ACTIVE_JOB,
-                ResourceType.NON_SINGLETON,
-                Operation.ALLOCATE,
-                false,
-                ImmutableList.of(
-                        new Ds3ResponseCode(200, ImmutableList.of(new Ds3ResponseType("StaticType", "ComponentType"))), //static
-                        new Ds3ResponseCode(201, ImmutableList.of(new Ds3ResponseType("AddedType", "ComponentType"))), //added
-                        new Ds3ResponseCode(203, ImmutableList.of(new Ds3ResponseType("ModifiedType", "ModifiedComponentType")))  //modified
-                ),
-                ImmutableList.of(
-                        new Ds3Param("StaticParam", "TestType", true),
-                        new Ds3Param("AddedParam", "TestType", true),
-                        new Ds3Param("ModifiedParam", "ModifiedTestType", false)),
-                null);
-
-        final Ds3RequestDiff diff = new ModifiedDs3RequestDiff(oldRequest, newRequest);
+        final Ds3RequestDiff diff = getModifiedRequest();
 
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024 * 8);
         final Writer writer = new OutputStreamWriter(outputStream);
