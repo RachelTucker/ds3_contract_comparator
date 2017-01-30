@@ -15,6 +15,7 @@
 
 package com.spectralogic.ds3contractcomparator.cli;
 
+import com.spectralogic.ds3autogen.utils.Guards;
 import org.apache.commons.cli.*;
 
 class CLI {
@@ -34,12 +35,15 @@ class CLI {
         final Option annotations = new Option(null, false, "Prints all Element Annotations instead of filtering out less used annotations by default");
         annotations.setLongOpt("annotations");
 
+        final Option printer = new Option("p", true, "Specify report printer: " + PrinterType.valuesString());
+
         options.addOption(oldSpec);
         options.addOption(newSpec);
         options.addOption(outFile);
         options.addOption(help);
         options.addOption(properties);
         options.addOption(annotations);
+        options.addOption(printer);
     }
 
     static Arguments getArguments(final String[] args) throws Exception {
@@ -66,12 +70,24 @@ class CLI {
         final boolean help = cmd.hasOption("h");
         final boolean properties = cmd.hasOption("properties");
         final boolean annotations = cmd.hasOption("annotations");
+        final PrinterType printerType = processPrinterType(cmd);
 
-        final Arguments arguments = new Arguments(oldSpec, newSpec, outFile, help, properties, annotations);
+        final Arguments arguments = new Arguments(oldSpec, newSpec, outFile, help, properties, annotations, printerType);
 
         validateArguments(arguments);
 
         return arguments;
+    }
+
+    private PrinterType processPrinterType(final CommandLine cmd) {
+        try {
+            return Guards.returnIfNull(cmd.getOptionValue("p").toUpperCase(), PrinterType::valueOf);
+        } catch (final NullPointerException e) {
+            //Default to HTML printer
+            return PrinterType.HTML;
+        } catch (final Exception e) {
+            throw new IllegalArgumentException(cmd.getOptionValue("p") + " is not a supported printer type");
+        }
     }
 
     private void validateArguments(final Arguments arguments) throws MissingArgumentException {
