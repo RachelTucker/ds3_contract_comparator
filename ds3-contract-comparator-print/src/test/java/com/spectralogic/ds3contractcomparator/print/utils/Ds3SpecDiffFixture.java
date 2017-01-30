@@ -16,10 +16,7 @@
 package com.spectralogic.ds3contractcomparator.print.utils;
 
 import com.google.common.collect.ImmutableList;
-import com.spectralogic.ds3autogen.api.models.apispec.Ds3Param;
-import com.spectralogic.ds3autogen.api.models.apispec.Ds3Request;
-import com.spectralogic.ds3autogen.api.models.apispec.Ds3ResponseCode;
-import com.spectralogic.ds3autogen.api.models.apispec.Ds3ResponseType;
+import com.spectralogic.ds3autogen.api.models.apispec.*;
 import com.spectralogic.ds3autogen.api.models.enums.*;
 import com.spectralogic.ds3contractcomparator.models.Ds3ApiSpecDiff;
 import com.spectralogic.ds3contractcomparator.models.request.AbstractDs3RequestDiff;
@@ -27,28 +24,80 @@ import com.spectralogic.ds3contractcomparator.models.request.AddedDs3RequestDiff
 import com.spectralogic.ds3contractcomparator.models.request.DeletedDs3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.request.ModifiedDs3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.type.AbstractDs3TypeDiff;
+import com.spectralogic.ds3contractcomparator.models.type.AddedDs3TypeDiff;
+import com.spectralogic.ds3contractcomparator.models.type.DeletedDs3TypeDiff;
+import com.spectralogic.ds3contractcomparator.models.type.ModifiedDs3TypeDiff;
 
 import static com.spectralogic.ds3autogen.testutil.Ds3ModelFixtures.getBucketRequest;
+import static com.spectralogic.ds3autogen.testutil.Ds3ModelFixtures.getHeadBucketRequest;
 
 /**
  * Contains fixtures for testing.
  */
 public final class Ds3SpecDiffFixture {
 
-    public static Ds3ApiSpecDiff getSpecDiff() {
+    public static Ds3ApiSpecDiff getTestSpecDiff() {
         final ImmutableList<AbstractDs3RequestDiff> requests = ImmutableList.of(
                 getAddedRequest(),
                 getDeletedRequest(),
                 getModifiedRequest()
         );
 
-        final ImmutableList<AbstractDs3TypeDiff> types = ImmutableList.of(); //TODO
+        final ImmutableList<AbstractDs3TypeDiff> types = ImmutableList.of(
+                getAddedType(),
+                getDeletedType(),
+                getModdifiedType()
+        );
 
         return new Ds3ApiSpecDiff(requests, types);
     }
 
+    public static Ds3Type getTestType() {
+        return getTestType("com.test.TestType", "ElementName");
+    }
+
+    public static Ds3Type getTestType(final String name, final String elementName) {
+        return new Ds3Type(
+                name,
+                "TestTypeNameToMarshal",
+                ImmutableList.of(
+                        new Ds3Element(
+                                elementName,
+                                "ElementType",
+                                "ElementComponentType",
+                                ImmutableList.of(
+                                        new Ds3Annotation(
+                                                "com.spectralogic.util.bean.lang.SortBy",
+                                                ImmutableList.of(new Ds3AnnotationElement(
+                                                        "com.test.AnnotationElementName",
+                                                        "com.test.AnnotationElementValue",
+                                                        "com.test.AnnotationElementValueType")))),
+                                true)),
+                ImmutableList.of(
+                        new Ds3EnumConstant(
+                                "EnumConstantName",
+                                ImmutableList.of(new Ds3Property(
+                                        "PropertyName",
+                                        "PropertyValue",
+                                        "PropertyValueType")))));
+    }
+
+    public static ModifiedDs3TypeDiff getModdifiedType() {
+        return new ModifiedDs3TypeDiff(
+                getTestType("com.test.ModifiedType", "ElementName1"),
+                getTestType("com.test.ModifiedType", "ElementName2"));
+    }
+
+    public static DeletedDs3TypeDiff getDeletedType() {
+        return new DeletedDs3TypeDiff(getTestType("com.test.DeletedType", "ElementName"));
+    }
+
+    public static AddedDs3TypeDiff getAddedType() {
+        return new AddedDs3TypeDiff(getTestType("com.test.AddedType", "ElementName"));
+    }
+
     public static AddedDs3RequestDiff getAddedRequest() {
-        return new AddedDs3RequestDiff(getBucketRequest());
+        return new AddedDs3RequestDiff(getHeadBucketRequest());
     }
 
     public static DeletedDs3RequestDiff getDeletedRequest() {
@@ -57,7 +106,7 @@ public final class Ds3SpecDiffFixture {
 
     public static ModifiedDs3RequestDiff getModifiedRequest() {
         final Ds3Request oldRequest = new Ds3Request(
-                "TestRequest",
+                "com.test.TestRequest",
                 HttpVerb.DELETE,
                 Classification.amazons3,
                 null,

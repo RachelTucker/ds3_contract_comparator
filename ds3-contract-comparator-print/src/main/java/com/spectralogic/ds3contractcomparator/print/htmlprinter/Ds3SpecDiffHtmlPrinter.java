@@ -15,14 +15,19 @@
 
 package com.spectralogic.ds3contractcomparator.print.htmlprinter;
 
+import com.google.common.collect.ImmutableList;
 import com.spectralogic.ds3autogen.api.models.apispec.Ds3Request;
 import com.spectralogic.ds3autogen.api.models.apispec.Ds3Type;
 import com.spectralogic.ds3contractcomparator.models.Ds3ApiSpecDiff;
+import com.spectralogic.ds3contractcomparator.models.request.*;
 import com.spectralogic.ds3contractcomparator.print.Ds3SpecDiffPrinter;
 import com.spectralogic.ds3contractcomparator.print.utils.WriterHelper;
 
 import java.io.Writer;
 
+import static com.spectralogic.ds3contractcomparator.print.htmlprinter.Ds3RequestDiffHtmlPrinter.printAddedRequest;
+import static com.spectralogic.ds3contractcomparator.print.htmlprinter.Ds3RequestDiffHtmlPrinter.printDeletedRequest;
+import static com.spectralogic.ds3contractcomparator.print.htmlprinter.Ds3RequestDiffHtmlPrinter.printModifiedRequest;
 import static com.spectralogic.ds3contractcomparator.print.utils.HtmlPrinterUtils.printIndex;
 
 /**
@@ -73,9 +78,38 @@ public class Ds3SpecDiffHtmlPrinter implements Ds3SpecDiffPrinter {
         writer.append(BEGINNING_OF_REPORT);
         writer.append("<h2>" + olderFileName + " VS " + newerFileName + "</h2>\n");
         printIndex(specDiff, writer);
-
+        printRequests(specDiff.getRequests(), writer);
         writer.append(END_OF_REPORT);
     }
 
+    //todo test
+    protected static void printRequests(final ImmutableList<AbstractDs3RequestDiff> requestDiffs, final WriterHelper writer) {
+        //Print modified requests
+        writer.append("<h2>Modified Commands</h2>");
 
+        requestDiffs.stream()
+                .filter(requestDiff -> requestDiff instanceof ModifiedDs3RequestDiff)
+                .forEach(requestDiff -> printModifiedRequest(
+                        requestDiff.getOldDs3Request(),
+                        requestDiff.getNewDs3Request(),
+                        writer));
+
+        //Print deleted requests
+        writer.append("<h2>Deleted Commands</h2>");
+
+        requestDiffs.stream()
+                .filter(requestDiff -> requestDiff instanceof DeletedDs3RequestDiff)
+                .forEach(requestDiff -> printDeletedRequest(
+                        requestDiff.getOldDs3Request(),
+                        writer));
+
+        //Print added requests
+        writer.append("<h2>Added Commands</h2>");
+
+        requestDiffs.stream()
+                .filter(requestDiff -> requestDiff instanceof AddedDs3RequestDiff)
+                .forEach(requestDiff -> printAddedRequest(
+                        requestDiff.getNewDs3Request(),
+                        writer));
+    }
 }

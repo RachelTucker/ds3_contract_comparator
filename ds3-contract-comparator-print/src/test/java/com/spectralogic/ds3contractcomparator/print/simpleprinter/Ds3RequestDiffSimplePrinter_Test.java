@@ -15,6 +15,7 @@
 
 package com.spectralogic.ds3contractcomparator.print.simpleprinter;
 
+import com.spectralogic.ds3contractcomparator.models.request.AddedDs3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.request.Ds3RequestDiff;
 import com.spectralogic.ds3contractcomparator.print.utils.WriterHelper;
 import org.junit.Test;
@@ -25,6 +26,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.regex.Pattern;
 
+import static com.spectralogic.ds3autogen.testutil.Ds3ModelFixtures.getBucketRequest;
 import static com.spectralogic.ds3contractcomparator.print.utils.Ds3SpecDiffFixture.*;
 import static org.junit.Assert.assertTrue;
 
@@ -57,7 +59,7 @@ public class Ds3RequestDiffSimplePrinter_Test {
                 "\\s+Type:\\s+N/A\\s+ListBucketResult",
                 Pattern.MULTILINE | Pattern.UNIX_LINES);
 
-        final Ds3RequestDiff diff = getAddedRequest();
+        final Ds3RequestDiff diff = new AddedDs3RequestDiff(getBucketRequest());
 
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream(1024 * 8);
         final Writer writer = new OutputStreamWriter(outputStream);
