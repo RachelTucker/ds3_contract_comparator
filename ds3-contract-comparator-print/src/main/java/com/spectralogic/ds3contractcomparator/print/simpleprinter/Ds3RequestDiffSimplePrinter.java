@@ -29,6 +29,8 @@ import static com.spectralogic.ds3autogen.utils.ConverterUtil.isEmpty;
 import static com.spectralogic.ds3autogen.utils.NormalizingContractNamesUtil.removePath;
 import static com.spectralogic.ds3contractcomparator.print.simpleprinter.Ds3ParamDiffSimplePrinter.printParamDiff;
 import static com.spectralogic.ds3contractcomparator.print.simpleprinter.Ds3ResponseDiffSimplePrinter.printResponseCodeDiff;
+import static com.spectralogic.ds3contractcomparator.print.utils.PrinterUtils.getParamNameUnion;
+import static com.spectralogic.ds3contractcomparator.print.utils.PrinterUtils.toParamMap;
 import static com.spectralogic.ds3contractcomparator.print.utils.SimplePrinterUtils.*;
 
 /**
@@ -216,34 +218,5 @@ final class Ds3RequestDiffSimplePrinter {
                 oldParamMap.get(name),
                 newParamMap.get(name),
                 writer));
-    }
-
-    /**
-     * Gets the union of names of all params within two {@link ImmutableList} of {@link Ds3Param}
-     */
-    private static ImmutableSet<String> getParamNameUnion(
-            final ImmutableList<Ds3Param> oldParams,
-            final ImmutableList<Ds3Param> newParams) {
-        final ImmutableSet.Builder<String> builder = ImmutableSet.builder();
-        if (hasContent(oldParams)) {
-            oldParams.forEach(param -> builder.add(param.getName()));
-        }
-        if (hasContent(newParams)) {
-            newParams.forEach(param -> builder.add(param.getName()));
-        }
-        return builder.build();
-    }
-
-    /**
-     * Converts an {@link ImmutableList} of {@link Ds3Param} into an {@link ImmutableMap} of
-     * parameter names and {@link Ds3Param}
-     */
-    private static ImmutableMap<String, Ds3Param> toParamMap(final ImmutableList<Ds3Param> params) {
-        if (isEmpty(params)) {
-            return ImmutableMap.of();
-        }
-        final ImmutableMap.Builder<String, Ds3Param> builder = ImmutableMap.builder();
-        params.forEach(param -> builder.put(param.getName(), param));
-        return builder.build();
     }
 }

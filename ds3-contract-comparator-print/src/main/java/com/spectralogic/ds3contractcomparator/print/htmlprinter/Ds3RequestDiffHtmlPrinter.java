@@ -15,12 +15,20 @@
 
 package com.spectralogic.ds3contractcomparator.print.htmlprinter;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
+import com.spectralogic.ds3autogen.api.models.apispec.Ds3Param;
 import com.spectralogic.ds3autogen.api.models.apispec.Ds3Request;
 import com.spectralogic.ds3autogen.api.models.enums.Classification;
 import com.spectralogic.ds3contractcomparator.print.utils.WriterHelper;
 
+import static com.spectralogic.ds3autogen.utils.ConverterUtil.isEmpty;
+import static com.spectralogic.ds3autogen.utils.Helper.hasContent;
 import static com.spectralogic.ds3autogen.utils.NormalizingContractNamesUtil.removePath;
 import static com.spectralogic.ds3contractcomparator.print.utils.HtmlPrinterUtils.*;
+import static com.spectralogic.ds3contractcomparator.print.utils.PrinterUtils.getParamNameUnion;
+import static com.spectralogic.ds3contractcomparator.print.utils.PrinterUtils.toParamMap;
 
 /**
  * Prints the difference in a {@link Ds3Request} between two versions of a contract in HTML format.
@@ -64,6 +72,7 @@ public final class Ds3RequestDiffHtmlPrinter {
         writer.append(createDeletedEntry("ResourceType", oldRequest.getResourceType(), INDENT));
         writer.append(createDeletedEntry("Operation", oldRequest.getOperation(), INDENT));
         writer.append(createDeletedEntry("IncludeInPath", oldRequest.getIncludeInPath(), INDENT));
+
         writer.append("</table>\n");
     }
 
