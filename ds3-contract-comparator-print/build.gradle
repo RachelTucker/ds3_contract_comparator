@@ -1,3 +1,8 @@
+apply plugin: 'kotlin'
+
 dependencies {
     compile project(":ds3-contract-comparator")
+    compile 'org.freemarker:freemarker:2.3.23'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile 'commons-beanutils:commons-beanutils:1.9.3'
 }

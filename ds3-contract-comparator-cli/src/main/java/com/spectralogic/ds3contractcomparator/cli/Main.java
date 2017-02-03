@@ -22,7 +22,7 @@ import com.spectralogic.ds3contractcomparator.Ds3ApiSpecComparator;
 import com.spectralogic.ds3contractcomparator.Ds3ApiSpecComparatorImpl;
 import com.spectralogic.ds3contractcomparator.models.Ds3ApiSpecDiff;
 import com.spectralogic.ds3contractcomparator.print.Ds3SpecDiffPrinter;
-import com.spectralogic.ds3contractcomparator.print.htmlprinter.Ds3SpecDiffHtmlPrinter;
+import com.spectralogic.ds3contractcomparator.print.htmlprinter.HtmlReportPrinter;
 import com.spectralogic.ds3contractcomparator.print.simpleprinter.Ds3SpecDiffSimplePrinter;
 
 import java.io.*;
@@ -83,7 +83,8 @@ public class Main {
         final Ds3SpecDiffPrinter printer;
         switch (args.getPrinterType()) {
             case HTML:
-                printer = new Ds3SpecDiffHtmlPrinter(args.getOldApiSpec(), args.getNewApiSpec(), writer);
+                //printer = new Ds3SpecDiffHtmlPrinter(args.getOldApiSpec(), args.getNewApiSpec(), writer);
+                printer = new HtmlReportPrinter(writer, args.getOldApiSpec(), args.getNewApiSpec());
                 break;
             case SIMPLE:
                 printer = new Ds3SpecDiffSimplePrinter(writer, args.isProperties(), args.isAnnotations());

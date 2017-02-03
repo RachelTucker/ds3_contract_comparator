@@ -1,6 +1,6 @@
 /*
  * ******************************************************************************
- *   Copyright 2016 Spectra Logic Corporation. All Rights Reserved.
+ *   Copyright 2016-2017 Spectra Logic Corporation. All Rights Reserved.
  *   Licensed under the Apache License, Version 2.0 (the "License"). You may not use
  *   this file except in compliance with the License. A copy of the License is located at
  *
@@ -12,6 +12,18 @@
  *   specific language governing permissions and limitations under the License.
  * ****************************************************************************
  */
+
+buildscript {
+    ext.kotlin_version = '1.0.5-2'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
 
 allprojects {
     group = 'com.spectralogic.ds3customcomparator'
