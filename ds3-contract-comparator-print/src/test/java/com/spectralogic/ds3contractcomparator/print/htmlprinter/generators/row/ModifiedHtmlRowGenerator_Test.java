@@ -13,50 +13,29 @@
  * ****************************************************************************
  */
 
-package com.spectralogic.ds3contractcomparator.print.htmlprinter.generators;
+package com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.row;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.spectralogic.ds3autogen.api.models.apispec.Ds3Param;
 import com.spectralogic.ds3autogen.api.models.apispec.Ds3ResponseCode;
-import com.spectralogic.ds3autogen.api.models.apispec.Ds3ResponseType;
+import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.ModifiedRow;
+import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.NoChangeRow;
+import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.Row;
+import com.spectralogic.ds3contractcomparator.print.utils.TestUnknownProperty;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
 
-import static com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.HtmlRowGenerator.*;
+import static com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.row.ModifiedHtmlRowGenerator.*;
+import static com.spectralogic.ds3contractcomparator.print.utils.Ds3ObjectFixture.*;
+import static com.spectralogic.ds3contractcomparator.print.utils.TestUtils.getObjectField;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class HtmlRowGenerator_Test {
-
-    private static final Ds3Param DELETED_PARAM = new Ds3Param("OldName", "OldType", false);
-    private static final Ds3Param ADDED_PARAM = new Ds3Param("NewName", "NewType", false);
-    private static final Ds3Param OLD_PARAM = new Ds3Param("ChangedParam", "Type1", false);
-    private static final Ds3Param NEW_PARAM = new Ds3Param("ChangedParam", "Type2", false);
-    private static final Ds3Param NO_CHANGE_PARAM = new Ds3Param("NoChangeParam", "NoChangeType", false);
-
-    private static ImmutableList<Ds3Param> getOldParamList() {
-        return ImmutableList.of(
-                DELETED_PARAM,
-                NO_CHANGE_PARAM,
-                OLD_PARAM);
-    }
-
-    private static ImmutableList<Ds3Param> getNewParamList() {
-        return ImmutableList.of(
-                ADDED_PARAM,
-                NO_CHANGE_PARAM,
-                NEW_PARAM);
-    }
-
-    private static Ds3ResponseType getNullEntriesResponseType() {
-        return new Ds3ResponseType("TestType", null, null);
-    }
+public class ModifiedHtmlRowGenerator_Test {
 
     @Test (expected = IllegalArgumentException.class)
     public void getFields_NullEntries_Test() {
@@ -178,10 +157,6 @@ public class HtmlRowGenerator_Test {
         assertThat(result, is("type"));
     }
 
-    private class TestUnknownProperty {
-        public int testVal;
-    }
-
     @Test
     public void getPropertyName_UnknownProperty_Test() {
         final String result = getPropertyName(new TestUnknownProperty(), new TestUnknownProperty());
@@ -280,5 +255,129 @@ public class HtmlRowGenerator_Test {
         assertThat(result, hasItem(OLD_PARAM.getName()));
         assertThat(result, hasItem(DELETED_PARAM.getName()));
         assertThat(result, hasItem(ADDED_PARAM.getName()));
+    }
+
+    @Test
+    public void getPropertyValues_NullList_Test() {
+        final ImmutableSet<String> result = getPropertyValues(null, "name");
+        assertThat(result.size(), is(0));
+    }
+
+    @Test
+    public void getPropertyValues_EmptyList_Test() {
+        final ImmutableSet<String> result = getPropertyValues(ImmutableList.of(), "name");
+        assertThat(result.size(), is(0));
+    }
+
+    @Test
+    public void getPropertyValues_Test() {
+        final ImmutableSet<String> result = getPropertyValues(getOldParamList(), "name");
+        assertThat(result.size(), is(3));
+        assertThat(result, hasItem(NO_CHANGE_PARAM.getName()));
+        assertThat(result, hasItem(OLD_PARAM.getName()));
+        assertThat(result, hasItem(DELETED_PARAM.getName()));
+    }
+
+    @Test
+    public void createModifiedRows_NullObjects_Test() {
+        final ImmutableList<Row> result = createModifiedRows(null, null, 0);
+        assertThat(result.size(), is(0));
+    }
+
+    @Test
+    public void createModifiedRows_OldNull_Test() {
+        final ImmutableList<Row> result = createModifiedRows(null, NEW_PARAM, 0);
+        assertThat(result.size(), is(3));
+        result.forEach(o -> assertTrue(o instanceof ModifiedRow));
+    }
+
+    @Test
+    public void createModifiedRows_NewNull_Test() {
+        final ImmutableList<Row> result = createModifiedRows(OLD_PARAM, null, 0);
+        assertThat(result.size(), is(3));
+        result.forEach(o -> assertTrue(o instanceof ModifiedRow));
+    }
+
+    @Test
+    public void createModifiedRows_Test() {
+        final ImmutableList<Row> result = createModifiedRows(OLD_PARAM, NEW_PARAM, 0);
+        assertThat(result.size(), is(3));
+        assertTrue(result.get(0) instanceof NoChangeRow);
+        assertTrue(result.get(1) instanceof ModifiedRow);
+        assertTrue(result.get(2) instanceof NoChangeRow);
+    }
+
+    @Test
+    public void createModifiedRows_ListInput_Test() {
+        final ImmutableList<Row> result = createModifiedRows(
+                getOldAnnotation(),
+                getNewAnnotation(),
+                0);
+
+        assertThat(result.size(), is(8));
+
+        //Describe Annotation
+        assertThat(result.get(0).getLabel(), is("name"));
+        assertTrue(result.get(0) instanceof NoChangeRow);
+        assertThat(result.get(1).getLabel(), is("ds3AnnotationElements"));
+        assertTrue(result.get(1) instanceof NoChangeRow);
+
+        //Describe Annotation Element 1
+        assertThat(result.get(2).getLabel(), is("name"));
+        assertTrue(result.get(2) instanceof NoChangeRow);
+
+        assertThat(result.get(3).getLabel(), is("value"));
+        assertTrue(result.get(3) instanceof NoChangeRow);
+
+        assertThat(result.get(4).getLabel(), is("valueType"));
+        assertTrue(result.get(4) instanceof NoChangeRow);
+
+        //Describe Annotation Element 2
+        assertThat(result.get(5).getLabel(), is("name"));
+        assertTrue(result.get(5) instanceof NoChangeRow);
+
+        assertThat(result.get(6).getLabel(), is("value"));
+        assertTrue(result.get(6) instanceof ModifiedRow);
+        assertThat(result.get(6).getOldVal(), is("Val2"));
+        assertThat(result.get(6).getNewVal(), is("Val3"));
+
+        assertThat(result.get(7).getLabel(), is("valueType"));
+        assertTrue(result.get(7) instanceof ModifiedRow);
+        assertThat(result.get(7).getOldVal(), is("ValType2"));
+        assertThat(result.get(7).getNewVal(), is("ValType3"));
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void toModifiedFieldIndent_NullObjects_Test() throws NoSuchFieldException {
+        final Field field = getObjectField(NEW_PARAM, "name");
+        toModifiedFieldIndent(0, null, null, field);
+    }
+
+    @Test
+    public void toModifiedFieldIndent_OldNull_Test() throws NoSuchFieldException {
+        final Field field = getObjectField(NEW_PARAM, "name");
+        final int result = toModifiedFieldIndent(0, null, NEW_PARAM, field);
+        assertThat(result, is(0));
+    }
+
+    @Test
+    public void toModifiedFieldIndent_NewNull_Test() throws NoSuchFieldException {
+        final Field field = getObjectField(OLD_PARAM, "name");
+        final int result = toModifiedFieldIndent(0, OLD_PARAM, null, field);
+        assertThat(result, is(0));
+    }
+
+    @Test
+    public void toModifiedFieldIndent_UniqueParam_Test() throws NoSuchFieldException {
+        final Field field = getObjectField(OLD_PARAM, "name");
+        final int result = toModifiedFieldIndent(0, OLD_PARAM, NEW_PARAM, field);
+        assertThat(result, is(0));
+    }
+
+    @Test
+    public void toModifiedFieldIndent_NonUniqueParam_Test() throws NoSuchFieldException {
+        final Field field = getObjectField(OLD_PARAM, "type");
+        final int result = toModifiedFieldIndent(0, OLD_PARAM, NEW_PARAM, field);
+        assertThat(result, is(1));
     }
 }

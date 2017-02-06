@@ -24,10 +24,12 @@ import com.spectralogic.ds3contractcomparator.models.Ds3ApiSpecDiff;
 import com.spectralogic.ds3contractcomparator.models.request.AbstractDs3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.request.AddedDs3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.request.DeletedDs3RequestDiff;
+import com.spectralogic.ds3contractcomparator.models.request.Ds3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.request.ModifiedDs3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.type.AbstractDs3TypeDiff;
 import com.spectralogic.ds3contractcomparator.models.type.AddedDs3TypeDiff;
 import com.spectralogic.ds3contractcomparator.models.type.DeletedDs3TypeDiff;
+import com.spectralogic.ds3contractcomparator.models.type.Ds3TypeDiff;
 import com.spectralogic.ds3contractcomparator.models.type.ModifiedDs3TypeDiff;
 import com.spectralogic.ds3contractcomparator.print.Ds3SpecDiffPrinter;
 import com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.HtmlRequestTableGenerator;
@@ -41,6 +43,8 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -55,15 +59,17 @@ import static com.spectralogic.ds3contractcomparator.print.utils.HtmlPrinterUtil
  */
 public class HtmlReportPrinter implements Ds3SpecDiffPrinter {
 
+    private static final Logger LOG = LoggerFactory.getLogger(HtmlReportPrinter.class);
+
     private final Configuration config = new Configuration(Configuration.VERSION_2_3_23);
     private final Writer writer;
-    private final String oldName;
-    private final String newName;
+    private final String oldContractName;
+    private final String newContractName;
 
-    public HtmlReportPrinter(final Writer writer, final String oldName, final String newName) {
+    public HtmlReportPrinter(final Writer writer, final String oldContractName, final String newContractName) {
         this.writer = writer;
-        this.oldName = oldName;
-        this.newName = newName;
+        this.oldContractName = oldContractName;
+        this.newContractName = newContractName;
 
         config.setDefaultEncoding("UTF-8");
         config.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
@@ -73,22 +79,25 @@ public class HtmlReportPrinter implements Ds3SpecDiffPrinter {
     @Override
     public void print(final Ds3ApiSpecDiff specDiff) {
         try {
-            generateReport(specDiff, oldName, newName, config, writer);
+            generateReport(specDiff, oldContractName, newContractName, config, writer);
         } catch (final Exception e) {
-            e.printStackTrace(); //todo change
+            LOG.warn("Unable to print report: {}", e.getMessage());
         }
     }
 
+    /**
+     * Generates the HTML report from a {@link Ds3ApiSpecDiff}
+     */
     private static void generateReport(
             final Ds3ApiSpecDiff specDiff,
-            final String oldName,
-            final String newName,
+            final String oldContractName,
+            final String newContractName,
             final Configuration config,
             final Writer writer) throws IOException, TemplateException {
 
         final HtmlReport report = new HtmlReport(
-                oldName,
-                newName,
+                oldContractName,
+                newContractName,
                 toIndex(specDiff),
                 toSections(specDiff));
 
@@ -96,7 +105,9 @@ public class HtmlReportPrinter implements Ds3SpecDiffPrinter {
         template.process(report, writer);
     }
 
-    //todo test
+    /**
+     * Creates the models representing the report index
+     */
     private static ImmutableList<IndexSection> toIndex(final Ds3ApiSpecDiff specDiff) {
         return ImmutableList.of(
                 new IndexSection("Modified Commands", toRequestIndexEntryList(specDiff.getRequests(), ModifiedDs3RequestDiff.class)),
@@ -107,7 +118,9 @@ public class HtmlReportPrinter implements Ds3SpecDiffPrinter {
                 new IndexSection("Added Types", toTypeIndexEntryList(specDiff.getTypes(), AddedDs3TypeDiff.class)));
     }
 
-    //todo test
+    /**
+     * Creates the index table entries representing all {@link Ds3TypeDiff}
+     */
     private static ImmutableList<IndexEntry> toTypeIndexEntryList(
             final ImmutableList<AbstractDs3TypeDiff> typeDiffs,
             final Class<? extends AbstractDs3TypeDiff> typeClass) {
@@ -117,7 +130,9 @@ public class HtmlReportPrinter implements Ds3SpecDiffPrinter {
                 .collect(GuavaCollectors.immutableList());
     }
 
-    //todo test
+    /**
+     * Creates the index table entry representing a single {@link Ds3TypeDiff}
+     */
     private static IndexEntry toTypeIndexEntry(final AbstractDs3TypeDiff typeDiff) {
         final Ds3Type type;
         if (typeDiff instanceof DeletedDs3TypeDiff) {
@@ -129,7 +144,9 @@ public class HtmlReportPrinter implements Ds3SpecDiffPrinter {
         return new IndexEntry(name, name);
     }
 
-    //todo test
+    /**
+     * Creates the index table entries for all {@link Ds3RequestDiff}
+     */
     private static ImmutableList<IndexEntry> toRequestIndexEntryList(
             final ImmutableList<AbstractDs3RequestDiff> requestDiffs,
             final Class<? extends  AbstractDs3RequestDiff> requestClass) {
@@ -139,7 +156,9 @@ public class HtmlReportPrinter implements Ds3SpecDiffPrinter {
                 .collect(GuavaCollectors.immutableList());
     }
 
-    //todo test
+    /**
+     * Creates the index table entry for a single {@link Ds3RequestDiff}
+     */
     private static IndexEntry toRequestIndexEntry(final AbstractDs3RequestDiff requestDiff) {
         final Ds3Request request;
         if (requestDiff instanceof DeletedDs3RequestDiff) {
@@ -152,7 +171,9 @@ public class HtmlReportPrinter implements Ds3SpecDiffPrinter {
                 toRequestAnchor(request.getName(), request.getClassification()));
     }
 
-    //todo test
+    /**
+     * Creates the body sections of the report
+     */
     private static ImmutableList<Section> toSections(final Ds3ApiSpecDiff specDiff) {
         return ImmutableList.of(
                 new Section("Modified Commands", toRequestTableList(specDiff.getRequests(), ModifiedDs3RequestDiff.class)),
@@ -163,7 +184,9 @@ public class HtmlReportPrinter implements Ds3SpecDiffPrinter {
                 new Section("Added Types", toTypeTableList(specDiff.getTypes(), AddedDs3TypeDiff.class)));
     }
 
-    //TODO test
+    /**
+     * Creates the report tables for the specified type of {@link AbstractDs3RequestDiff}
+     */
     private static ImmutableList<Table> toRequestTableList(
             final ImmutableList<AbstractDs3RequestDiff> requestDiffs,
             final Class<? extends  AbstractDs3RequestDiff> requestClass) {
@@ -173,7 +196,9 @@ public class HtmlReportPrinter implements Ds3SpecDiffPrinter {
                 .collect(GuavaCollectors.immutableList());
     }
 
-    //TODO test
+    /**
+     * Creates the report tables for the specified type of {@link AbstractDs3TypeDiff}
+     */
     private static ImmutableList<Table> toTypeTableList(
             final ImmutableList<AbstractDs3TypeDiff> typeDiffs,
             final Class<? extends AbstractDs3TypeDiff> typeClass) {

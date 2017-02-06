@@ -18,12 +18,9 @@ package com.spectralogic.ds3contractcomparator.print.utils;
 import com.google.common.collect.ImmutableList;
 import com.spectralogic.ds3autogen.api.models.apispec.*;
 import com.spectralogic.ds3autogen.api.models.enums.*;
-import com.spectralogic.ds3contractcomparator.models.Ds3ApiSpecDiff;
-import com.spectralogic.ds3contractcomparator.models.request.AbstractDs3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.request.AddedDs3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.request.DeletedDs3RequestDiff;
 import com.spectralogic.ds3contractcomparator.models.request.ModifiedDs3RequestDiff;
-import com.spectralogic.ds3contractcomparator.models.type.AbstractDs3TypeDiff;
 import com.spectralogic.ds3contractcomparator.models.type.AddedDs3TypeDiff;
 import com.spectralogic.ds3contractcomparator.models.type.DeletedDs3TypeDiff;
 import com.spectralogic.ds3contractcomparator.models.type.ModifiedDs3TypeDiff;
@@ -35,22 +32,6 @@ import static com.spectralogic.ds3autogen.testutil.Ds3ModelFixtures.getHeadBucke
  * Contains fixtures for testing.
  */
 public final class Ds3SpecDiffFixture {
-
-    public static Ds3ApiSpecDiff getTestSpecDiff() {
-        final ImmutableList<AbstractDs3RequestDiff> requests = ImmutableList.of(
-                getAddedRequest(),
-                getDeletedRequest(),
-                getModifiedRequest()
-        );
-
-        final ImmutableList<AbstractDs3TypeDiff> types = ImmutableList.of(
-                getAddedType(),
-                getDeletedType(),
-                getModdifiedType()
-        );
-
-        return new Ds3ApiSpecDiff(requests, types);
-    }
 
     public static Ds3Type getTestType() {
         return getTestType("com.test.TestType", "ElementName");

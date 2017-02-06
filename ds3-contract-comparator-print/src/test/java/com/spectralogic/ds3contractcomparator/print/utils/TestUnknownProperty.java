@@ -15,26 +15,9 @@
 
 package com.spectralogic.ds3contractcomparator.print.utils;
 
-import com.spectralogic.ds3autogen.api.models.enums.Classification;
-
-import static com.spectralogic.ds3autogen.utils.NormalizingContractNamesUtil.removePath;
-
 /**
- * Utils used in the generation of the HTML report.
+ * Used in testing reflection with non-Ds3 model
  */
-public class HtmlPrinterUtils {
-
-    /**
-     * Creates the title for a request used in index and request headers
-     */
-    public static String toRequestTitle(final String name, final Classification classification) {
-        return removePath(name) + " (" + classification.toString() + ")";
-    }
-
-    /**
-     * Creates the HTML anchor for a request used in creating internal links
-     */
-    public static String toRequestAnchor(final String name, final Classification classification) {
-        return removePath(name) + classification.toString();
-    }
+public class TestUnknownProperty {
+    public int testVal;
 }

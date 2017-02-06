@@ -15,26 +15,21 @@
 
 package com.spectralogic.ds3contractcomparator.print.utils;
 
-import com.spectralogic.ds3autogen.api.models.enums.Classification;
-
-import static com.spectralogic.ds3autogen.utils.NormalizingContractNamesUtil.removePath;
+import java.lang.reflect.Field;
 
 /**
- * Utils used in the generation of the HTML report.
+ * Utilities for testing HTML printer.
  */
-public class HtmlPrinterUtils {
+public final class TestUtils {
 
-    /**
-     * Creates the title for a request used in index and request headers
-     */
-    public static String toRequestTitle(final String name, final Classification classification) {
-        return removePath(name) + " (" + classification.toString() + ")";
+    private TestUtils() {
+        //pass
     }
 
     /**
-     * Creates the HTML anchor for a request used in creating internal links
+     * Retrieves the specified field from an object.
      */
-    public static String toRequestAnchor(final String name, final Classification classification) {
-        return removePath(name) + classification.toString();
+    public static <T> Field getObjectField(final T object, final String fieldName) throws NoSuchFieldException {
+        return object.getClass().getDeclaredField(fieldName);
     }
 }

@@ -21,7 +21,9 @@ import com.spectralogic.ds3contractcomparator.models.request.*;
 import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.Table;
 import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.RowConstants;
 
-import static com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.HtmlRowGenerator.*;
+import static com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.row.AddedHtmlRowGenerator.createAddedRows;
+import static com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.row.DeletedHtmlRowGenerator.createDeletedRows;
+import static com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.row.ModifiedHtmlRowGenerator.createModifiedRows;
 import static com.spectralogic.ds3contractcomparator.print.utils.HtmlPrinterUtils.toRequestAnchor;
 import static com.spectralogic.ds3contractcomparator.print.utils.HtmlPrinterUtils.toRequestTitle;
 
@@ -30,7 +32,11 @@ import static com.spectralogic.ds3contractcomparator.print.utils.HtmlPrinterUtil
  */
 public final class HtmlRequestTableGenerator {
 
-    //TODO test
+    /**
+     * Converts a {@link AbstractDs3RequestDiff} into a {@link Table} if it is
+     * either a {@link AddedDs3RequestDiff}, {@link DeletedDs3RequestDiff}, or
+     * a {@link ModifiedDs3RequestDiff}. Else an exception is thrown.
+     */
     public static Table toRequestTable(final AbstractDs3RequestDiff requestDiff) {
         if (requestDiff instanceof AddedDs3RequestDiff) {
             return toAddedRequestTable(requestDiff);
@@ -44,8 +50,11 @@ public final class HtmlRequestTableGenerator {
         throw new IllegalArgumentException("Cannot convert AbstractDs3RequestDiff of class: " + requestDiff.getClass());
     }
 
-    //TODO test
-    private static Table toAddedRequestTable(final AbstractDs3RequestDiff requestDiff) {
+    /**
+     * Converts a {@link AddedDs3RequestDiff} into a {@link Table} representing
+     * the {@link Ds3Request} that was added.
+     */
+    static Table toAddedRequestTable(final AbstractDs3RequestDiff requestDiff) {
         if (!(requestDiff instanceof AddedDs3RequestDiff)) {
             throw new IllegalArgumentException("Only converts classes of AddedDs3RequestDiff to Table, does not support: " + requestDiff.getClass());
         }
@@ -57,8 +66,11 @@ public final class HtmlRequestTableGenerator {
                 createAddedRows(added, RowConstants.STARTING_INDENT));
     }
 
-    //todo test
-    private static Table toDeletedRequestTable(final AbstractDs3RequestDiff requestDiff) {
+    /**
+     * Converts a {@link DeletedDs3RequestDiff} into a {@link Table} representing
+     * the {@link Ds3Request} that was removed.
+     */
+    static Table toDeletedRequestTable(final AbstractDs3RequestDiff requestDiff) {
         if (!(requestDiff instanceof DeletedDs3RequestDiff)) {
             throw new IllegalArgumentException("Only converts classes of DeletedDs3RequestDiff to Table, does not support: " + requestDiff.getClass());
         }
@@ -69,8 +81,11 @@ public final class HtmlRequestTableGenerator {
                 createDeletedRows(deleted, RowConstants.STARTING_INDENT));
     }
 
-    //todo test
-    private static Table toModifiedRequestTable(final AbstractDs3RequestDiff requestDiff) {
+    /**
+     * Converts a {@link ModifiedDs3RequestDiff} into a {@link Table} representing
+     * the changes between versions of the {@link Ds3Request}.
+     */
+    static Table toModifiedRequestTable(final AbstractDs3RequestDiff requestDiff) {
         if (!(requestDiff instanceof ModifiedDs3RequestDiff)) {
             throw new IllegalArgumentException("Only converts classes of ModifiedDs3RequestDiff to Table, does not support: " + requestDiff.getClass());
         }

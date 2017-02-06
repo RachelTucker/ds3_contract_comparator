@@ -21,14 +21,20 @@ import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.Tabl
 import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.RowConstants;
 
 import static com.spectralogic.ds3autogen.utils.NormalizingContractNamesUtil.removePath;
-import static com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.HtmlRowGenerator.*;
+import static com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.row.AddedHtmlRowGenerator.createAddedRows;
+import static com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.row.DeletedHtmlRowGenerator.createDeletedRows;
+import static com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.row.ModifiedHtmlRowGenerator.createModifiedRows;
 
 /**
  * Generates the {@link Table} that represents the HTML representation of a {@link Ds3TypeDiff}.
  */
 public class HtmlTypeTableGenerator {
 
-    //TODO test
+    /**
+     * Converts a {@link AbstractDs3TypeDiff} into a {@link Table} if it is
+     * either an {@link AddedDs3TypeDiff}, {@link DeletedDs3TypeDiff}, or
+     * a {@link ModifiedDs3TypeDiff}. Else an exception is thrown.
+     */
     public static Table toTypeTable(final AbstractDs3TypeDiff typeDiff) {
         if (typeDiff instanceof AddedDs3TypeDiff) {
             return toAddedTypeTable(typeDiff);
@@ -42,8 +48,11 @@ public class HtmlTypeTableGenerator {
         throw new IllegalArgumentException("Cannot convert AbstractDs3TypeDiff of class: " + typeDiff.getClass());
     }
 
-    //TODO test
-    private static Table toAddedTypeTable(final AbstractDs3TypeDiff typDiff) {
+    /**
+     * Converts a {@link AddedDs3TypeDiff} into a {@link Table} representing
+     * the {@link Ds3Type} that was added.
+     */
+    static Table toAddedTypeTable(final AbstractDs3TypeDiff typDiff) {
         if (!(typDiff instanceof AddedDs3TypeDiff)) {
             throw new IllegalArgumentException("Only converts classes of AddedDs3TypeDiff to Table, does not support: " + typDiff.getClass());
         }
@@ -52,8 +61,11 @@ public class HtmlTypeTableGenerator {
         return new Table(name, name, createAddedRows(added, RowConstants.STARTING_INDENT));
     }
 
-    //todo test
-    private static Table toDeletedTypeTable(final AbstractDs3TypeDiff typeDiff) {
+    /**
+     * Converts a {@link DeletedDs3TypeDiff} into a {@link Table} representing
+     * the {@link Ds3Type} that was removed.
+     */
+    static Table toDeletedTypeTable(final AbstractDs3TypeDiff typeDiff) {
         if (!(typeDiff instanceof DeletedDs3TypeDiff)) {
             throw new IllegalArgumentException("Only converts classes of DeletedDs3TypeDiff to Table, does not support: " + typeDiff.getClass());
         }
@@ -62,8 +74,11 @@ public class HtmlTypeTableGenerator {
         return new Table(name, name, createDeletedRows(deleted, RowConstants.STARTING_INDENT));
     }
 
-    //todo test
-    private static Table toModifiedTypeTable(final AbstractDs3TypeDiff typeDiff) {
+    /**
+     * Converts a {@link ModifiedDs3TypeDiff} into a {@link Table} representing
+     * the changes between versions of the {@link Ds3Type}.
+     */
+    static Table toModifiedTypeTable(final AbstractDs3TypeDiff typeDiff) {
         if (!(typeDiff instanceof ModifiedDs3TypeDiff)) {
             throw new IllegalArgumentException("Only converts classes of ModifiedDs3TypeDiff to Table, does not support: " + typeDiff.getClass());
         }
