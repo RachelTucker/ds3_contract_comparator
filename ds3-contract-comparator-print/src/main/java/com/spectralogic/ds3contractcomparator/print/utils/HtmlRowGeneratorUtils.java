@@ -36,6 +36,10 @@ public final class HtmlRowGeneratorUtils {
 
     private static final Logger LOG = LoggerFactory.getLogger(HtmlRowGeneratorUtils.class);
 
+    private HtmlRowGeneratorUtils() {
+        //pass
+    }
+
     /**
      * Retrieves the specified property of type {@link ImmutableList}
      */

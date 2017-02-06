@@ -28,7 +28,11 @@ import static com.spectralogic.ds3contractcomparator.print.htmlprinter.generator
 /**
  * Generates the {@link Table} that represents the HTML representation of a {@link Ds3TypeDiff}.
  */
-public class HtmlTypeTableGenerator {
+public final class HtmlTypeTableGenerator {
+
+    private HtmlTypeTableGenerator() {
+        //pass
+    }
 
     /**
      * Converts a {@link AbstractDs3TypeDiff} into a {@link Table} if it is

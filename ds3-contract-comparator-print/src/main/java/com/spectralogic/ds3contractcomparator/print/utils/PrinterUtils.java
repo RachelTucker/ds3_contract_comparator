@@ -28,6 +28,10 @@ import static com.spectralogic.ds3autogen.utils.ConverterUtil.isEmpty;
  */
 public final class PrinterUtils {
 
+    private PrinterUtils() {
+        //pass
+    }
+
     /**
      * Converts an {@link ImmutableList} of {@link Ds3Param} into an {@link ImmutableMap} of
      * parameter names and {@link Ds3Param}

@@ -32,6 +32,10 @@ import static com.spectralogic.ds3contractcomparator.print.utils.HtmlPrinterUtil
  */
 public final class HtmlRequestTableGenerator {
 
+    private HtmlRequestTableGenerator() {
+        //pass
+    }
+
     /**
      * Converts a {@link AbstractDs3RequestDiff} into a {@link Table} if it is
      * either a {@link AddedDs3RequestDiff}, {@link DeletedDs3RequestDiff}, or

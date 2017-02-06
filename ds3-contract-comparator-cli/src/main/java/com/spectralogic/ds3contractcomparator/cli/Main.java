@@ -83,7 +83,6 @@ public class Main {
         final Ds3SpecDiffPrinter printer;
         switch (args.getPrinterType()) {
             case HTML:
-                //printer = new Ds3SpecDiffHtmlPrinter(args.getOldApiSpec(), args.getNewApiSpec(), writer);
                 printer = new HtmlReportPrinter(writer, args.getOldApiSpec(), args.getNewApiSpec());
                 break;
             case SIMPLE:

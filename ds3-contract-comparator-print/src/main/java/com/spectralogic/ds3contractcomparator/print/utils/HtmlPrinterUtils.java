@@ -22,7 +22,11 @@ import static com.spectralogic.ds3autogen.utils.NormalizingContractNamesUtil.rem
 /**
  * Utils used in the generation of the HTML report.
  */
-public class HtmlPrinterUtils {
+public final class HtmlPrinterUtils {
+
+    private HtmlPrinterUtils() {
+        //pass
+    }
 
     /**
      * Creates the title for a request used in index and request headers
