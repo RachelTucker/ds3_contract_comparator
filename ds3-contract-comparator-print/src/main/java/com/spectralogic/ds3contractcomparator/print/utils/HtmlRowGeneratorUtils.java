@@ -58,10 +58,8 @@ public final class HtmlRowGeneratorUtils {
             }
             throw new IllegalArgumentException("Object should be of type ImmutableList, but was: " + object.getClass().toString());
         } catch (final IllegalAccessException e) {
-            LOG.warn("Could not retrieve list element {} from object of class {}: {}",
-                    field.getName(),
-                    object.getClass().toString(),
-                    e.getMessage());
+            LOG.error("Could not retrieve list element " + field.getName() + " from object of class "
+                    + object.getClass().toString() + ": " + e.getMessage(), e);
 
             return ImmutableList.of();
         }
@@ -126,10 +124,8 @@ public final class HtmlRowGeneratorUtils {
                     return Optional.of(value);
             }
         } catch (final IllegalAccessException|NoSuchMethodException|InvocationTargetException e) {
-            LOG.warn("Could not retrieve property {} from class {}: {}",
-                    property,
-                    object.getClass().toString(),
-                    e.getMessage());
+            LOG.warn("Could not retrieve property " + property + " from class "
+                    + object.getClass().toString() + ": " + e.getMessage(), e);
 
             return Optional.empty();
         }

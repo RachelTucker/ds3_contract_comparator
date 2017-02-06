@@ -210,10 +210,8 @@ public final class ModifiedHtmlRowGenerator {
             try {
                 builder.add(BeanUtils.getProperty(o, property));
             } catch (final IllegalAccessException|InvocationTargetException |NoSuchMethodException e) {
-                LOG.warn("Cannot create property union of objects from class {} using property {}: {}",
-                        o.getClass().toString(),
-                        property,
-                        e.getMessage());
+                LOG.error("Cannot create property union of objects from class " + o.getClass().toString()
+                                + " using property " + property + ": " + e.getMessage(), e);
             }
         });
 
@@ -233,10 +231,8 @@ public final class ModifiedHtmlRowGenerator {
             try {
                 builder.put(BeanUtils.getProperty(o, property), o);
             } catch (final IllegalAccessException|InvocationTargetException|NoSuchMethodException e) {
-                LOG.warn("Cannot create property map of object from class {} using property {}: {}",
-                        o.getClass().toString(),
-                        property,
-                        e.getMessage());
+                LOG.warn("Cannot create property map of object from class " + o.getClass().toString()
+                                + " using property " + property + ": " + e.getMessage(), e);
             }
         });
         return builder.build();

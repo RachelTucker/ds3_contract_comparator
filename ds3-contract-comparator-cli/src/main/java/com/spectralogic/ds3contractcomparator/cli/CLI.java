@@ -17,8 +17,12 @@ package com.spectralogic.ds3contractcomparator.cli;
 
 import com.spectralogic.ds3autogen.utils.Guards;
 import org.apache.commons.cli.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class CLI {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CLI.class);
 
     final private Options options;
 
@@ -86,6 +90,7 @@ class CLI {
             //Default to HTML printer
             return PrinterType.HTML;
         } catch (final Exception e) {
+            LOG.error("Unknown printer selection", e);
             throw new IllegalArgumentException(cmd.getOptionValue("p") + " is not a supported printer type");
         }
     }

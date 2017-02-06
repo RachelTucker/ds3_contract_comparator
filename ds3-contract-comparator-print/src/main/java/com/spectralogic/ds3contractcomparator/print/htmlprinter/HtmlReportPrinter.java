@@ -81,7 +81,7 @@ public class HtmlReportPrinter implements Ds3SpecDiffPrinter {
         try {
             generateReport(specDiff, oldContractName, newContractName, config, writer);
         } catch (final Exception e) {
-            LOG.warn("Unable to print report: {}", e.getMessage());
+            LOG.error("Unable to print report: " + e.getMessage(), e);
         }
     }
 
