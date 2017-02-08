@@ -16,16 +16,13 @@
 package com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.row;
 
 import com.google.common.collect.ImmutableList;
+import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.RowAttributes;
 import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.AddedRow;
-import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.NoChangeRow;
 import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.Row;
 
-import java.lang.reflect.Field;
-import java.util.Optional;
+import java.util.function.Function;
 
-import static com.spectralogic.ds3contractcomparator.print.utils.HtmlRowGeneratorUtils.getListPropertyFromObject;
-import static com.spectralogic.ds3contractcomparator.print.utils.HtmlRowGeneratorUtils.getPropertyValue;
-import static com.spectralogic.ds3contractcomparator.print.utils.HtmlRowGeneratorUtils.toFieldIndent;
+import static com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.row.HtmlRowGenerator.createRows;
 
 /**
  * Utilities for generating the {@link ImmutableList} of {@link Row} which
@@ -42,24 +39,9 @@ public final class AddedHtmlRowGenerator {
      * rows that represent the object.
      */
     public static <T> ImmutableList<Row> createAddedRows(final T object, final int indent) {
-        final Field[] fields = object.getClass().getDeclaredFields();
-        final ImmutableList.Builder<Row> builder = ImmutableList.builder();
+        final Function<RowAttributes, Row> toAddedRowFunc = (rowAttributes ->
+                new AddedRow(rowAttributes.getIndent(), rowAttributes.getProperty(), rowAttributes.getValue()));
 
-        for (final Field field : fields) {
-            final String property = field.getName();
-            final Optional<String> value = getPropertyValue(object, property);
-            final int fieldIndent = toFieldIndent(indent, object, field);
-            if (value.isPresent()) {
-                if (field.getType() == ImmutableList.class) {
-                    builder.add(new NoChangeRow(fieldIndent, property, ""));
-
-                    final ImmutableList<?> objList = getListPropertyFromObject(field, object);
-                    objList.forEach(obj -> builder.addAll(createAddedRows(obj, fieldIndent + 1)));
-                } else {
-                    builder.add(new AddedRow(fieldIndent, property, value.get()));
-                }
-            }
-        }
-        return builder.build();
+        return createRows(object, indent, toAddedRowFunc);
     }
 }

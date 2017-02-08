@@ -119,7 +119,6 @@ public final class HtmlRowGeneratorUtils {
                     if (value.contains(".")) {
                         return Optional.of(removePath(value));
                     }
-                    return Optional.of(value);
                 default:
                     return Optional.of(value);
             }
