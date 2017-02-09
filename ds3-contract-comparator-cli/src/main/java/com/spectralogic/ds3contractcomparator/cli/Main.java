@@ -21,6 +21,8 @@ import com.spectralogic.ds3autogen.api.models.apispec.Ds3ApiSpec;
 import com.spectralogic.ds3contractcomparator.Ds3ApiSpecComparator;
 import com.spectralogic.ds3contractcomparator.Ds3ApiSpecComparatorImpl;
 import com.spectralogic.ds3contractcomparator.models.Ds3ApiSpecDiff;
+import com.spectralogic.ds3contractcomparator.print.Ds3SpecDiffPrinter;
+import com.spectralogic.ds3contractcomparator.print.htmlprinter.HtmlReportPrinter;
 import com.spectralogic.ds3contractcomparator.print.simpleprinter.Ds3SpecDiffSimplePrinter;
 
 import java.io.*;
@@ -77,7 +79,19 @@ public class Main {
 
         final OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(args.getOutputFile()), "UTF-8");
         final Writer writer = new BufferedWriter(outputStreamWriter);
-        final Ds3SpecDiffSimplePrinter printer = new Ds3SpecDiffSimplePrinter(writer, args.isProperties(), args.isAnnotations());
+
+        final Ds3SpecDiffPrinter printer;
+        switch (args.getPrinterType()) {
+            case HTML:
+                printer = new HtmlReportPrinter(writer, args.getOldApiSpec(), args.getNewApiSpec());
+                break;
+            case SIMPLE:
+                printer = new Ds3SpecDiffSimplePrinter(writer, args.isProperties(), args.isAnnotations());
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown printer type " + args.getPrinterType().toString());
+        }
+
         printer.print(specDiff);
         writer.close();
     }

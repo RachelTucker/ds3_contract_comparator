@@ -23,6 +23,7 @@ public class Arguments {
     private final boolean help;
     private final boolean properties;
     private final boolean annotations;
+    private final PrinterType printerType;
 
     public Arguments(
             final String oldApiSpec,
@@ -30,13 +31,15 @@ public class Arguments {
             final String outputFile,
             final boolean help,
             final boolean properties,
-            final boolean annotations) {
+            final boolean annotations,
+            final PrinterType printerType) {
         this.oldApiSpec = oldApiSpec;
         this.newApiSpec = newApiSpec;
         this.outputFile = outputFile;
         this.help = help;
         this.properties = properties;
         this.annotations = annotations;
+        this.printerType = printerType;
     }
 
 
@@ -62,5 +65,9 @@ public class Arguments {
 
     public boolean isAnnotations() {
         return annotations;
+    }
+
+    public PrinterType getPrinterType() {
+        return printerType;
     }
 }

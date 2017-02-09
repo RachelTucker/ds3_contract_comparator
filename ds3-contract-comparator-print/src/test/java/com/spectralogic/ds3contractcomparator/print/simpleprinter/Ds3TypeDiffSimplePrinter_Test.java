@@ -30,35 +30,10 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.regex.Pattern;
 
+import static com.spectralogic.ds3contractcomparator.print.utils.Ds3SpecDiffFixture.getTestType;
 import static org.junit.Assert.assertTrue;
 
 public class Ds3TypeDiffSimplePrinter_Test {
-
-    private static Ds3Type getTestType() {
-        return new Ds3Type(
-                "com.test.TestType",
-                "TestTypeNameToMarshal",
-                ImmutableList.of(
-                        new Ds3Element(
-                                "ElementName",
-                                "ElementType",
-                                "ElementComponentType",
-                                ImmutableList.of(
-                                        new Ds3Annotation(
-                                                "com.spectralogic.util.bean.lang.SortBy",
-                                                ImmutableList.of(new Ds3AnnotationElement(
-                                                        "com.test.AnnotationElementName",
-                                                        "com.test.AnnotationElementValue",
-                                                        "com.test.AnnotationElementValueType")))),
-                                true)),
-                ImmutableList.of(
-                        new Ds3EnumConstant(
-                                "EnumConstantName",
-                                ImmutableList.of(new Ds3Property(
-                                        "PropertyName",
-                                        "PropertyValue",
-                                        "PropertyValueType")))));
-    }
 
     @Test
     public void printTypeDiff_AddedNoFiltering_Test() throws IOException {
