@@ -13,10 +13,7 @@
  * ****************************************************************************
  */
 
-package com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body
-
-import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.Row
-import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.RowConstants
+package com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows
 
 /**
  * A table row that represents that an element was deleted
@@ -25,12 +22,7 @@ class DeletedRow(override val indent: Int,
                  override val label: String,
                  override val oldVal: String) : Row {
 
-    override val oldColor: String
-        get() = RowConstants.DELETED_COLOR
-
-    override val newColor: String
-        get() = RowConstants.NO_COLOR
-
-    override val newVal: String
-        get() = RowConstants.NA
+    override val oldColor = RowConstants.DELETED_COLOR
+    override val newColor = RowConstants.NO_COLOR
+    override val newVal = RowConstants.NA
 }

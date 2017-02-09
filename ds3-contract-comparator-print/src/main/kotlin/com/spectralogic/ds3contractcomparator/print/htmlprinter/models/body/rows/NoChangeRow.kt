@@ -15,8 +15,6 @@
 
 package com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows
 
-import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.Row
-
 /**
  * A table row that has not changed in value between contracts
  */
@@ -24,15 +22,8 @@ class NoChangeRow(override val indent: Int,
                   override val label: String,
                   val value: String) : Row {
 
-    override val oldVal: String
-        get() = value
-
-    override val newVal: String
-        get() = value
-
-    override val oldColor: String
-        get() = RowConstants.NO_COLOR
-
-    override val newColor: String
-        get() = RowConstants.NO_COLOR
+    override val oldVal = value
+    override val newVal = value
+    override val oldColor = RowConstants.NO_COLOR
+    override val newColor = RowConstants.NO_COLOR
 }

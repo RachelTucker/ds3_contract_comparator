@@ -16,7 +16,7 @@
 package com.spectralogic.ds3contractcomparator.print.htmlprinter.generators.row;
 
 import com.google.common.collect.ImmutableList;
-import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.DeletedRow;
+import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.DeletedRow;
 import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.NoChangeRow;
 import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.Row;
 import org.junit.Test;

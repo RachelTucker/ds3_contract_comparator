@@ -116,7 +116,7 @@ public final class ModifiedHtmlRowGenerator {
             @Nullable final T newObject,
             final Field field) {
         if (oldObject == null && newObject == null) {
-            throw  new IllegalArgumentException("Cannot determine field indent when objects are null");
+            throw new IllegalArgumentException("Cannot determine field indent when objects are null");
         }
         return oldObject == null ? toFieldIndent(curIndent, newObject, field) : toFieldIndent(curIndent, oldObject, field);
     }

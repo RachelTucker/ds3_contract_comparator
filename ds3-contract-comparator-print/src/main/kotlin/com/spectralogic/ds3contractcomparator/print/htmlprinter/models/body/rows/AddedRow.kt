@@ -22,12 +22,7 @@ class AddedRow(override val indent: Int,
                override val label: String,
                override val newVal: String) : Row {
 
-    override val oldColor: String
-        get() = RowConstants.NO_COLOR
-
-    override val newColor: String
-        get() = RowConstants.ADDED_COLOR
-
-    override val oldVal: String
-        get() = RowConstants.NA
+    override val oldColor = RowConstants.NO_COLOR
+    override val newColor = RowConstants.ADDED_COLOR
+    override val oldVal = RowConstants.NA
 }

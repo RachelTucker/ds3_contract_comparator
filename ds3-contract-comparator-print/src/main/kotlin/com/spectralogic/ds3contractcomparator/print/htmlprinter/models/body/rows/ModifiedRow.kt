@@ -15,8 +15,6 @@
 
 package com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows
 
-import com.spectralogic.ds3contractcomparator.print.htmlprinter.models.body.rows.Row
-
 /**
  * A table row that represents an element that was modified
  */
@@ -25,9 +23,6 @@ class ModifiedRow(override val indent: Int,
                   override val oldVal: String,
                   override val newVal: String) : Row {
 
-    override val oldColor: String
-        get() = RowConstants.DELETED_COLOR
-
-    override val newColor: String
-        get() = RowConstants.ADDED_COLOR
+    override val oldColor = RowConstants.DELETED_COLOR
+    override val newColor = RowConstants.ADDED_COLOR
 }
